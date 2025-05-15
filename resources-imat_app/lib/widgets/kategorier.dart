@@ -9,7 +9,12 @@ class Kategorier extends StatelessWidget {
       width:150,
       color: Colors.grey,
       height:double.infinity,
-      child: Text("Kategorier")
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+        FavoriterKnapp(),
+        KategoriLista(),
+      ],)
     );
   }
 }
@@ -21,13 +26,35 @@ class FavoriterKnapp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: const Color.fromARGB(255, 184, 184, 184),
-      child: Text("Favoriter")
+
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        
+        child: GestureDetector(
+          onTap: () {
+           // TODO: Handle tap
+          },
+          child: Text("Favoriter"),
+          ),
+        )
     );
   }
 }
 
 class KategoriLista extends StatelessWidget {
   const KategoriLista({super.key});
+
+  final List<String> kategorier = const [
+    "Mejeri",
+    "Grönsaker",
+    "Frukt",
+    "Bröd",
+    "Kött",
+    "Snacks",
+    "Kryddor",
+    "Bakverk",
+    "Frysvaror",
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +63,27 @@ class KategoriLista extends StatelessWidget {
       child:Column(
         children: [
           Text("Kategorier - Rubrik"),
+          const SizedBox(height: 16),
+        ...kategorier.map(
+          (category) => Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6),
+            child: Row(
+              children: [
+                MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: GestureDetector(
+                    onTap: () {
+                      // TODO: Handle tap
+                    },
+                    child: Text(
+                      category,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            ),
+        ),
         ],
       )
     );
