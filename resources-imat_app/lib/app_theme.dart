@@ -8,5 +8,18 @@ class AppTheme {
   static const double paddingLarge = 24.0;
   static const double paddingHuge = 32.0;
 
+  static const Color orange = Color.fromARGB(255, 132, 67, 6);
+  static const Color darkOrange = Color.fromARGB(255, 132, 67, 6);
+  static const Color green = Color.fromARGB(255, 132, 67, 6);
+  static const Color darkGreen = Color.fromARGB(255, 132, 67, 6);
+  static const Color red = Color.fromARGB(255, 132, 67, 6);
+  static const Color darkRed = Color.fromARGB(255, 132, 67, 6);
+
+  static const Color black = Color.fromARGB(255, 132, 67, 6);
+  static const Color grey = Color.fromARGB(255, 132, 67, 6);
+  static const Color darkGrey = Color.fromARGB(255, 132, 67, 6);
+  static const Color lightGrey = Color.fromARGB(255, 132, 67, 6);
+  static const Color offWhite = Color.fromARGB(255, 132, 67, 6);
+
   static ColorScheme colorScheme = ColorScheme.fromSeed(seedColor: Colors.blue);
 }
