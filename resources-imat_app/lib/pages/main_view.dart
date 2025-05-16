@@ -17,9 +17,6 @@ class MainView extends StatelessWidget {
     var iMat = context.watch<ImatDataHandler>();
     var products = iMat.selectProducts;
 
-    // Det finns en version utan gridDelegate nedan.
-    // Den kan vara enklare att förstå.
-    // Denna version har fördelen att kort skapas on-demand.
     return Scaffold(
       body: Column(
         children: [
