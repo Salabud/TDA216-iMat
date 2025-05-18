@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:imat_app/app_theme.dart';
 import 'package:imat_app/model/imat/product.dart';
+import 'package:imat_app/model/imat/shopping_item.dart';
 import 'package:imat_app/model/imat_data_handler.dart';
 
 class ProductCard extends StatelessWidget {
@@ -29,9 +30,26 @@ class ProductCard extends StatelessWidget {
               '${product.price.toStringAsFixed(2)} ${product.unit}',
               style: const TextStyle(fontSize: 14),
             ),
+            BuyButton(onPressed: () {iMat.shoppingCartAdd(ShoppingItem(product));},)
           ],
         ),
       ),
+    );
+  }
+}
+
+class BuyButton extends StatelessWidget {
+  const BuyButton({required this.onPressed,super.key});
+
+  final void Function() onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.add),
+      onPressed: (){
+        onPressed();
+      }
     );
   }
 }
