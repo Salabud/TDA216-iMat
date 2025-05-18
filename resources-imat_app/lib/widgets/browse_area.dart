@@ -10,28 +10,25 @@ class BrowseArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Padding(
-        padding:EdgeInsets.all(20),
-        child: Container(
-          color: Colors.green,
-          height: double.infinity,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children:[
-                ...ProductCategory.values.map((category) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 15),
-                    child: CategorySection(
-                      category: category,
-                    )
-                  );
-                })
-              ]
-              //Should iterate through every item in ProductCategory and create a CategorySection
-            ),
-          )
-        ),
+      child: Container(
+        color: Colors.green,
+        height: double.infinity,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children:[
+              ...ProductCategory.values.map((category) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 15),
+                  child: CategorySection(
+                    category: category,
+                  )
+                );
+              })
+            ]
+            //Should iterate through every item in ProductCategory and create a CategorySection
+          ),
+        )
       ),
     );
   }
@@ -52,13 +49,17 @@ class CategorySection extends StatelessWidget {
     return Container(
       color: Colors.lightGreen,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(category.toString(), style: TextStyle(fontSize: 20),),
+          Padding(
+            padding: EdgeInsets.fromLTRB(30, 20, 0, 0),
+            child: Text(category.toString(), style: TextStyle(fontSize: 30))
+          ),
           GridView.count(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             primary: false,
-            padding: const EdgeInsets.all(20),
+            padding:EdgeInsets.all(10),
             crossAxisSpacing: 10,
             mainAxisSpacing: 10,
             crossAxisCount: 3,
