@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:imat_app/model/imat/product.dart';
+import 'package:imat_app/model/imat_data_handler.dart';
+import 'package:imat_app/widgets/product_card.dart';
+import 'package:provider/provider.dart';
 
 class BrowseArea extends StatelessWidget {
   const BrowseArea({super.key});
@@ -44,12 +47,26 @@ class CategorySection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var iMat = context.watch<ImatDataHandler>();
+    
     return Container(
       color: Colors.lightGreen,
       child: Column(
         children: [
           Text(category.toString(), style: TextStyle(fontSize: 20),),
-          Text("Lisa på produkter av den här kategorin...")
+          GridView.count(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            primary: false,
+            padding: const EdgeInsets.all(20),
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+            crossAxisCount: 3,
+            children:[
+              for (Product product in iMat.findProductsByCategory(category))
+              ProductCard(product, iMat),
+            ],
+          )
         ],
       )
     );
