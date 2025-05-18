@@ -92,7 +92,7 @@ class KundvagnInnehall extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               for (ShoppingItem item in cart.items.reversed)
-                KundvagnItem(item: item),
+                KundvagnItem(item: item, iMat: iMat,),
             ],
           ),
         ),
@@ -117,10 +117,12 @@ class KundvagnTotal extends StatelessWidget {
 
 class KundvagnItem extends StatelessWidget {
   final ShoppingItem item;
+  final ImatDataHandler iMat;
   
   const KundvagnItem({
     super.key,
     required this.item,
+    required this.iMat,
   });
 
   @override
@@ -133,7 +135,9 @@ class KundvagnItem extends StatelessWidget {
         children: [
           Text("${item.product.name} "),
           Text("${item.amount}st "),
-          Text("${item.total}:- ")
+          Text("${item.total}:- "),
+          Spacer(),
+          IconButton(onPressed: () {iMat.shoppingCartRemove(item);}, icon: Icon(Icons.remove))
         ],
       )
     );
