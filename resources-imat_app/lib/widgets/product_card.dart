@@ -14,23 +14,88 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(AppTheme.paddingSmall),
+      color: AppTheme.bottomCardGrey,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: SizedBox(
+        height: 40,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(child: iMat.getImage(product)),
-            Text(
-              product.name,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withValues(alpha: 0.5),
+                                  spreadRadius: 1,
+                                  blurRadius: 10,
+                                  offset: Offset(-2, -1), // changes position of shadow
+                                ),
+                              ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: SizedBox(
+                      width: 160,
+                      height: 160,
+                      child: Image(
+                        image: iMat.getImage(product).image,
+                        fit: BoxFit.cover,
+                        alignment: Alignment.center,
+                      ),
+                    ),
+                  ),
+                ),
+                
+                // Product info
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 12,top:12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          product.name,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          "${product.price.toStringAsFixed(2)}:-",
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                        Text(
+                          product.unit.substring(2),
+                          style: const TextStyle(fontSize: 9),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: AppTheme.paddingSmall),
-            Text(
-              '${product.price.toStringAsFixed(2)} ${product.unit}',
-              style: const TextStyle(fontSize: 14),
+            
+            Row(
+              children: [
+                Text("Leverantör och Mer info")
+              ],
             ),
-            BuyButton(onPressed: () {iMat.shoppingCartAdd(ShoppingItem(product));},)
+            
+            const Spacer(),
+            
+            // Buy button
+            Align(
+              alignment: Alignment.bottomRight,
+              child: BuyButton(
+                onPressed: () => iMat.shoppingCartAdd(ShoppingItem(product)),
+              ),
+            ),
           ],
         ),
       ),

@@ -19,6 +19,8 @@ class AppTheme {
   static const Color grey = Color.fromARGB(255, 132, 67, 6);
   static const Color darkGrey = Color.fromARGB(255, 132, 67, 6);
   static const Color lightGrey = Color.fromARGB(255, 132, 67, 6);
+  static const Color bottomCardGrey = Color(0xffEBEBEB);
+  static const Color browseAreaBG = Color(0xffEEEEEE);
   static const Color offWhite = Color.fromARGB(255, 132, 67, 6);
 
   static ColorScheme colorScheme = ColorScheme.fromSeed(seedColor: Colors.blue);

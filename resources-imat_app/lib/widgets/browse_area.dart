@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:imat_app/app_theme.dart';
 import 'package:imat_app/model/imat/product.dart';
 import 'package:imat_app/model/imat_data_handler.dart';
 import 'package:imat_app/widgets/product_card.dart';
@@ -47,7 +48,7 @@ class CategorySection extends StatelessWidget {
     var iMat = context.watch<ImatDataHandler>();
     
     return Container(
-      color: Colors.lightGreen,
+      color: AppTheme.browseAreaBG,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
