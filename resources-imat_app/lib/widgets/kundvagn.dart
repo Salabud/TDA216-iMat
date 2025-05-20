@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:imat_app/pages/payment_view.dart';
 import 'package:provider/provider.dart';
 import 'package:imat_app/model/imat/product.dart';
 import 'package:imat_app/model/imat/shopping_cart.dart';
@@ -37,11 +38,23 @@ class KassaKnapp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: kvittoWidth,
-      height:75,
-      color: const Color.fromARGB(255, 120, 167, 255),
-      child: Text("kassaknapp")
+    return MouseRegion(
+      cursor: SystemMouseCursors.click ,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const PaymentView()),
+          );
+        },
+        child: Container(
+          width: kvittoWidth,
+          height:75,
+          color: const Color.fromARGB(255, 120, 167, 255),
+          child: Text("kassaknapp")
+        ),
+        
+      ),
     );
   }
 }
