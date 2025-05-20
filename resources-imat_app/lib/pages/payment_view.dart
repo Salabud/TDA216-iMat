@@ -22,7 +22,7 @@ class PaymentView extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          Header(),
+          Header(currentStep: 2,),
           Expanded(
             child: Row(children: [
               CardInfo(),

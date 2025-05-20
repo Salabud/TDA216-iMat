@@ -12,24 +12,53 @@ class BrowseArea extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        color: Colors.green,
+        color: AppTheme.browseAreaBG,
         height: double.infinity,
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children:[
-              ...ProductCategory.values.map((category) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 15),
-                  child: CategorySection(
-                    category: category,
-                  )
-                );
-              })
+        child: CustomScrollView(
+          slivers: [
+            for (final category in ProductCategory.values) ...[
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(30, 20, 0, 10),
+                  child: Text(
+                    category.toString(),
+                    style: const TextStyle(fontSize: 30),
+                  ),
+                ),
+              ),
+              CategoryGrid(category: category),
+              const SliverToBoxAdapter(child: SizedBox(height: 15)),
             ]
-            //Should iterate through every item in ProductCategory and create a CategorySection
-          ),
-        )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CategoryGrid extends StatelessWidget {
+  final ProductCategory category;
+
+  const CategoryGrid({required this.category, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final iMat = context.watch<ImatDataHandler>();
+    final products = iMat.findProductsByCategory(category);
+
+    return SliverPadding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      sliver: SliverGrid(
+        delegate: SliverChildBuilderDelegate(
+          (context, index) => ProductCard(products[index]),
+          childCount: products.length,
+        ),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          childAspectRatio: 0.9,
+        ),
       ),
     );
   }
@@ -66,7 +95,7 @@ class CategorySection extends StatelessWidget {
             crossAxisCount: 3,
             children:[
               for (Product product in iMat.findProductsByCategory(category))
-              ProductCard(product),
+              ProductCard(product,),
             ],
           )
         ],

@@ -20,11 +20,11 @@ class MainView extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          Header(),
+          Header(currentStep: 1,),
           Expanded(
             child: Row(children: [
               Kategorier(),
-              //BrowseArea(),
+              BrowseArea(),
               Kundvagn()
             ],),
           )

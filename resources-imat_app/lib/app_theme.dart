@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   static const double paddingTiny = 4.0;
@@ -8,8 +9,8 @@ class AppTheme {
   static const double paddingLarge = 24.0;
   static const double paddingHuge = 32.0;
 
-  static const Color orange = Color.fromARGB(255, 132, 67, 6);
-  static const Color darkOrange = Color.fromARGB(255, 132, 67, 6);
+  static const Color orange = Color(0xffFAA43C);
+  static const Color darkOrange = Color(0xffD26600);
   static const Color green = Color(0xff98C849);
   static const Color darkGreen = Color.fromARGB(255, 132, 67, 6);
   static const Color red = Color.fromARGB(255, 132, 67, 6);
@@ -24,4 +25,15 @@ class AppTheme {
   static const Color offWhite = Color.fromARGB(255, 132, 67, 6);
 
   static ColorScheme colorScheme = ColorScheme.fromSeed(seedColor: Colors.blue);
+
+  static TextStyle logoStyle = TextStyle(
+    fontFamily: 'MadimiOne',
+    fontSize: 70,
+    color:Colors.white,
+  );
+  static TextStyle iStyle = TextStyle(
+    fontFamily: 'MadimiOne',
+    fontSize: 70,
+    color: AppTheme.darkOrange,
+  );
 }

@@ -1,0 +1,178 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:imat_app/app_theme.dart';
+
+class StepProgressBar extends StatelessWidget {
+  final int currentStep; // 0 = Logga in, 1 = Handla, 2 = Betala
+
+  const StepProgressBar({required this.currentStep, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final steps = ['Logga in', 'Handla', 'Betala'];
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(steps.length * 2 - 1, (index) {
+        if (index.isOdd) {
+          // Arrow between steps
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Icon(Icons.arrow_forward, color: AppTheme.darkOrange),
+          );
+        }
+
+        final stepIndex = index ~/ 2;
+        return GetRightStage(
+          index: stepIndex,
+          currentStep: currentStep,
+          label: steps[stepIndex].toString()
+        );
+      }),
+    );
+  }
+}
+
+class GetRightStage extends StatelessWidget {
+  final int index;
+  final int currentStep;
+  final String label;
+  const GetRightStage({super.key,required this.index,required this.currentStep,required this.label});
+  
+  @override
+  Widget build(BuildContext context) {
+    if (index < currentStep){
+      return PastStage(label: label);
+    }
+    if (index == currentStep){
+      return CurrentStage(label: label);
+    }
+    return FutureStage(label: label);
+  }
+}
+
+class PastStage extends StatelessWidget {
+  const PastStage({super.key,required this.label});
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // Step circle
+          Container(
+            width: 28,
+            height: 28,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.white, width: 3),
+              color: AppTheme.orange,
+            ),
+            child: Center(
+              child: Container(
+                width: 18,
+                height: 18,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            label,
+            style: GoogleFonts.inter(
+              fontWeight: FontWeight.normal,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      );
+  }
+}
+
+class CurrentStage extends StatelessWidget {
+  const CurrentStage({super.key,required this.label});
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // Step circle
+          Container(
+            width: 28,
+            height: 28,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.white, width: 3),
+              color: const Color.fromARGB(255, 68, 255, 44),
+            ),
+            child: Center(
+              child: Container(
+                width: 18,
+                height: 18,
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 255, 31, 31),
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            label,
+            style: GoogleFonts.inter(
+              fontWeight: FontWeight.normal,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      );
+  }
+}
+
+class FutureStage extends StatelessWidget {
+  const FutureStage({super.key,required this.label});
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // Step circle
+          Container(
+            width: 22,
+            height: 22,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: AppTheme.darkOrange,
+            ),
+            child: Center(
+              child: Container(
+                width: 18,
+                height: 18,
+                decoration: BoxDecoration(
+                  color: AppTheme.orange,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            label,
+            style: GoogleFonts.inter(
+              fontWeight: FontWeight.normal,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      );
+  }
+}
