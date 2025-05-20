@@ -12,6 +12,16 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var productAmount;
+    for (ShoppingItem item in iMat.getShoppingCart().items){
+      ;
+      if (product == item.product){
+        productAmount = item.amount;
+      }
+      else {
+        productAmount = 0;
+      }
+    }
     return Card(
       elevation: 4,
       color: AppTheme.bottomCardGrey,
@@ -99,7 +109,7 @@ class ProductCard extends StatelessWidget {
               padding: EdgeInsets.all(10),
               child: DecoratedBox(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(50),
                   color: Colors.white
                 ),
                 child: Row(
@@ -108,6 +118,7 @@ class ProductCard extends StatelessWidget {
                     RemoveButton(
                       onPressed: () => iMat.shoppingCartUpdate(ShoppingItem(product),delta: -1),
                     ),
+                    Text('${productAmount} st'),
                     BuyButton(
                       onPressed: () => iMat.shoppingCartAdd(ShoppingItem(product)),
                     ),
@@ -128,11 +139,20 @@ class BuyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(Icons.add),
-      onPressed: (){
-        onPressed();
-      }
+    return Container(
+      width:50,
+      height:50,
+      decoration: BoxDecoration(
+        color:AppTheme.green,
+        shape: BoxShape.circle, 
+      ),
+      child: IconButton(
+        icon: Icon(Icons.add),
+        color:Colors.white,
+        onPressed: (){
+          onPressed();
+        }
+      ),
     );
   }
 }
@@ -144,11 +164,20 @@ class RemoveButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(Icons.remove),
-      onPressed: (){
-        onPressed();
-      }
+    return Container(
+      width:50,
+      height:50,
+      decoration: BoxDecoration(
+        color:AppTheme.darkGrey,
+        shape: BoxShape.circle, 
+      ),
+      child: IconButton(
+        icon: Icon(Icons.remove),
+        color:Colors.white,
+        onPressed: (){
+          onPressed();
+        }
+      ),
     );
   }
 }

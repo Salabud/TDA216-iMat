@@ -10,14 +10,14 @@ class AppTheme {
 
   static const Color orange = Color.fromARGB(255, 132, 67, 6);
   static const Color darkOrange = Color.fromARGB(255, 132, 67, 6);
-  static const Color green = Color.fromARGB(255, 132, 67, 6);
+  static const Color green = Color(0xff98C849);
   static const Color darkGreen = Color.fromARGB(255, 132, 67, 6);
   static const Color red = Color.fromARGB(255, 132, 67, 6);
   static const Color darkRed = Color.fromARGB(255, 132, 67, 6);
 
   static const Color black = Color.fromARGB(255, 132, 67, 6);
   static const Color grey = Color.fromARGB(255, 132, 67, 6);
-  static const Color darkGrey = Color.fromARGB(255, 132, 67, 6);
+  static const Color darkGrey = Color(0xff6D6D6D);
   static const Color lightGrey = Color.fromARGB(255, 132, 67, 6);
   static const Color bottomCardGrey = Color(0xffEBEBEB);
   static const Color browseAreaBG = Color(0xffEEEEEE);
