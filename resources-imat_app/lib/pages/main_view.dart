@@ -24,7 +24,7 @@ class MainView extends StatelessWidget {
           Expanded(
             child: Row(children: [
               Kategorier(),
-              BrowseArea(),
+              //BrowseArea(),
               Kundvagn()
             ],),
           )
