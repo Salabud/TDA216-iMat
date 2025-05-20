@@ -6,7 +6,7 @@ class Kategorier extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width:150,
+      width:170,
       color: Colors.grey,
       height:double.infinity,
       child: Column(
