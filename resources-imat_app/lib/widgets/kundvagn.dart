@@ -116,14 +116,27 @@ class KundvagnInnehall extends StatelessWidget {
 
 class KundvagnTotal extends StatelessWidget {
   const KundvagnTotal({super.key});
+  
 
   @override
   Widget build(BuildContext context) {
+    var iMat = context.watch<ImatDataHandler>();
     return Container(
       width:double.infinity,
       height:75,
       color: const Color.fromARGB(255, 117, 255, 250),
-      child: Text("Total")
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Total:"),
+          Text(
+            iMat.shoppingCartTotal().toString(),
+            style: TextStyle(
+              fontSize: 25
+            ),
+          )
+        ]
+      )
     );
   }
 }

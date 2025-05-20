@@ -66,7 +66,7 @@ class CategorySection extends StatelessWidget {
             crossAxisCount: 3,
             children:[
               for (Product product in iMat.findProductsByCategory(category))
-              ProductCard(product, iMat),
+              ProductCard(product),
             ],
           )
         ],

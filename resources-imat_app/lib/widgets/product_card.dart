@@ -3,23 +3,23 @@ import 'package:imat_app/app_theme.dart';
 import 'package:imat_app/model/imat/product.dart';
 import 'package:imat_app/model/imat/shopping_item.dart';
 import 'package:imat_app/model/imat_data_handler.dart';
+import 'package:provider/provider.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
-  final ImatDataHandler iMat;
 
-  const ProductCard(this.product, this.iMat, {super.key});
+  const ProductCard(this.product, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    var productAmount;
+    var iMat = context.watch<ImatDataHandler>();
+    var productAmount = 0.0;
+    var inCart = false;
     for (ShoppingItem item in iMat.getShoppingCart().items){
-      ;
       if (product == item.product){
         productAmount = item.amount;
-      }
-      else {
-        productAmount = 0;
+        inCart = true;
+        break;
       }
     }
     return Card(
@@ -30,7 +30,6 @@ class ProductCard extends StatelessWidget {
       ),
       clipBehavior: Clip.antiAlias,
       child: SizedBox(
-        height: 40,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -110,7 +109,7 @@ class ProductCard extends StatelessWidget {
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(50),
-                  color: Colors.white
+                  color: inCart ? AppTheme.green : Colors.white,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -118,7 +117,12 @@ class ProductCard extends StatelessWidget {
                     RemoveButton(
                       onPressed: () => iMat.shoppingCartUpdate(ShoppingItem(product),delta: -1),
                     ),
-                    Text('${productAmount} st'),
+                    Text(
+                      '${productAmount} st',
+                      style: TextStyle(
+                        color: inCart ? Colors.white : Colors.black,
+                      )
+                    ),
                     BuyButton(
                       onPressed: () => iMat.shoppingCartAdd(ShoppingItem(product)),
                     ),
