@@ -12,7 +12,23 @@ class BrowseArea extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        color: AppTheme.browseAreaBG,
+        decoration: BoxDecoration(
+          color: AppTheme.browseAreaBG,
+          boxShadow: [
+            BoxShadow(
+              color: const Color.fromARGB(70, 75, 97, 108),
+              blurStyle: BlurStyle.inner,
+              spreadRadius: 0,
+              blurRadius:10,
+            ),
+            BoxShadow(
+              color: AppTheme.browseAreaBG,
+              spreadRadius: -2,
+              blurRadius: 10,
+              blurStyle: BlurStyle.inner,
+            ),
+          ]
+        ),
         height: double.infinity,
         child: CustomScrollView(
           slivers: [

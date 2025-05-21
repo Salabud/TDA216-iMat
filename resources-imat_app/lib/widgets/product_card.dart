@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:imat_app/app_theme.dart';
 import 'package:imat_app/model/imat/product.dart';
 import 'package:imat_app/model/imat/shopping_item.dart';
@@ -23,7 +24,7 @@ class ProductCard extends StatelessWidget {
       }
     }
     return Card(
-      elevation: 4,
+      elevation: 2,
       color: AppTheme.bottomCardGrey,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
@@ -32,46 +33,46 @@ class ProductCard extends StatelessWidget {
       child: SizedBox(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              color: Colors.white,
-              child: Column(
-                children: [Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withValues(alpha: 0.5),
-                                      spreadRadius: 1,
-                                      blurRadius: 10,
-                                      offset: Offset(-2, -1), // changes position of shadow
-                                    ),
-                                  ],
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Stack(
-                          children: [
-                            SizedBox(
-                              width: 160,
-                              height: 160,
-                              child: Image(
-                                image: iMat.getImage(product).image,
-                                fit: BoxFit.cover,
-                                alignment: Alignment.center,
-                              ),
+            Expanded(
+              child: Container(
+                color: Colors.white,
+                child: Column(
+                  children: [Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withValues(alpha: 0.5),
+                              spreadRadius: 0.2,
+                              blurRadius: 6,
+                              offset: Offset(-2, 4), // changes position of shadow
                             ),
-                            FavoriteButton(p: product)
-                          ]
+                          ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Stack(
+                            children: [
+                              SizedBox(
+                                width: 160,
+                                height: 160,
+                                child: Image(
+                                  image: iMat.getImage(product).image,
+                                  fit: BoxFit.cover,
+                                  alignment: Alignment.center,
+                                ),
+                              ),
+                              FavoriteButton(p: product)
+                            ]
+                          ),
                         ),
                       ),
-                    ),
-                    
-                    // Product info
-                    Expanded(
-                      child: Padding(
+                      
+                      Padding(
                         padding: const EdgeInsets.only(left: 12,top:12),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,7 +86,7 @@ class ProductCard extends StatelessWidget {
                             const SizedBox(height: 4),
                             Text(
                               "${product.price.toStringAsFixed(2)}:-",
-                              style: const TextStyle(fontSize: 20),
+                              style: TextStyle(fontSize: 40,fontWeight: FontWeight.w500,fontFamily: 'MadimiOne',color:AppTheme.offBlack),
                             ),
                             Text(
                               product.unit.substring(2),
@@ -94,19 +95,17 @@ class ProductCard extends StatelessWidget {
                           ],
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                
-                Row(
-                  children: [
-                    Text("Leverantör och Mer info")
-                  ],
-                ),
-              ]),
+                    ],
+                  ),
+                  
+                  Row(
+                    children: [
+                      Text("Leverantör och Mer info")
+                    ],
+                  ),
+                ]),
+              ),
             ),
-            
-            const Spacer(),
             
             // Buy button
             Padding(
@@ -124,8 +123,10 @@ class ProductCard extends StatelessWidget {
                     ),
                     Text(
                       '${productAmount} st',
-                      style: TextStyle(
-                        color: inCart ? Colors.white : Colors.black,
+                      style: GoogleFonts.openSans(
+                        color: inCart ? Colors.white : AppTheme.offBlack,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 20,
                       )
                     ),
                     BuyButton(
@@ -206,13 +207,34 @@ class FavoriteButton extends StatelessWidget {
 
     var icon =
         isFavorite
-            ? Icon(Icons.star, color: AppTheme.favColor)
+            ? Icon(Icons.star, color: Colors.white)
             : Icon(Icons.star, color: AppTheme.unFavColor);
 
-    return IconButton(
-      onPressed: (){
-        iMat.toggleFavorite(p);
-      },
-      icon: icon);
+    return Padding(
+      padding: EdgeInsets.all(8),
+      child: Container(
+        width: 28,
+        height: 28,
+        decoration: BoxDecoration(
+          color: (isFavorite) ? AppTheme.favColor : Colors.white,
+          shape: BoxShape.circle,
+          boxShadow: [BoxShadow(
+            color: const Color.fromARGB(97, 95, 95, 95),
+            blurRadius: 1,
+            spreadRadius: 1,
+            offset: Offset(0, 2)
+          )]
+        ),
+        child: IconButton(
+          iconSize: 22,
+          constraints: const BoxConstraints(),
+          padding: EdgeInsets.zero,
+          onPressed: (){
+            iMat.toggleFavorite(p);
+          },
+          icon: icon,
+        ),
+      ),
+    );
   }
 }
