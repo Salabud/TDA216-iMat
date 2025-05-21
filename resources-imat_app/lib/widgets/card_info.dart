@@ -127,7 +127,14 @@ class TillbakaKnapp extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const MainView()),
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) => const MainView(),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                return child; // Just return the child without any animation
+              },
+              transitionDuration: Duration.zero,
+              reverseTransitionDuration: Duration.zero,
+            ),
           );
         },
         child: Container(

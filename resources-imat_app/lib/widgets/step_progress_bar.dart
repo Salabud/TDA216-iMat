@@ -16,10 +16,12 @@ class StepProgressBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(steps.length * 2 - 1, (index) {
         if (index.isOdd) {
-          // Arrow between steps
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Icon(Icons.arrow_forward, color: AppTheme.darkOrange),
+            child: Align(
+              alignment: Alignment(0,-0.4),
+              child: Icon(Icons.arrow_forward, color: (currentStep > index~/2) ? Colors.white : AppTheme.darkOrange)
+            ),
           );
         }
 
@@ -105,19 +107,20 @@ class CurrentStage extends StatelessWidget {
         children: [
           // Step circle
           Container(
-            width: 28,
-            height: 28,
+            width: 34,
+            height: 34,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(color: Colors.white, width: 3),
-              color: const Color.fromARGB(255, 68, 255, 44),
+              color: AppTheme.orange,
             ),
             child: Center(
               child: Container(
-                width: 18,
-                height: 18,
+                width: 24,
+                height: 24,
                 decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 255, 31, 31),
+                  color: AppTheme.orange,
+                  border: Border.all(color: Colors.white, width: 4),
                   shape: BoxShape.circle,
                 ),
               ),
@@ -127,7 +130,7 @@ class CurrentStage extends StatelessWidget {
           Text(
             label,
             style: GoogleFonts.inter(
-              fontWeight: FontWeight.normal,
+              fontWeight: FontWeight.w800,
               color: Colors.white,
             ),
           ),
@@ -147,16 +150,16 @@ class FutureStage extends StatelessWidget {
         children: [
           // Step circle
           Container(
-            width: 22,
-            height: 22,
+            width: 24,
+            height: 24,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: AppTheme.darkOrange,
             ),
             child: Center(
               child: Container(
-                width: 18,
-                height: 18,
+                width: 20,
+                height: 20,
                 decoration: BoxDecoration(
                   color: AppTheme.orange,
                   shape: BoxShape.circle,
@@ -169,7 +172,7 @@ class FutureStage extends StatelessWidget {
             label,
             style: GoogleFonts.inter(
               fontWeight: FontWeight.normal,
-              color: Colors.white,
+              color: AppTheme.darkOrange,
             ),
           ),
         ],

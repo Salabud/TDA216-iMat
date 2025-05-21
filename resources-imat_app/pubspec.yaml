@@ -33,6 +33,7 @@ dependencies:
   provider: ^6.1.4
   http: ^1.0.3
   google_fonts: ^6.2.0
+  dotted_border: ^2.0.0
   
 
   # The following adds the Cupertino Icons font to your application.
@@ -49,6 +50,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  mobkit_dashed_border: ^0.0.8
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

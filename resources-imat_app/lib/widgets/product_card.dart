@@ -52,14 +52,19 @@ class ProductCard extends StatelessWidget {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(12),
-                        child: SizedBox(
-                          width: 160,
-                          height: 160,
-                          child: Image(
-                            image: iMat.getImage(product).image,
-                            fit: BoxFit.cover,
-                            alignment: Alignment.center,
-                          ),
+                        child: Stack(
+                          children: [
+                            SizedBox(
+                              width: 160,
+                              height: 160,
+                              child: Image(
+                                image: iMat.getImage(product).image,
+                                fit: BoxFit.cover,
+                                alignment: Alignment.center,
+                              ),
+                            ),
+                            FavoriteButton(p: product)
+                          ]
                         ),
                       ),
                     ),
@@ -183,5 +188,31 @@ class RemoveButton extends StatelessWidget {
         }
       ),
     );
+  }
+}
+
+class FavoriteButton extends StatelessWidget {
+  const FavoriteButton({
+    super.key,
+    required this.p
+  });
+
+  final Product p;
+
+  @override
+  Widget build(BuildContext context) {
+    var iMat = context.watch<ImatDataHandler>();
+    var isFavorite = iMat.isFavorite(p);
+
+    var icon =
+        isFavorite
+            ? Icon(Icons.star, color: AppTheme.favColor)
+            : Icon(Icons.star, color: AppTheme.unFavColor);
+
+    return IconButton(
+      onPressed: (){
+        iMat.toggleFavorite(p);
+      },
+      icon: icon);
   }
 }

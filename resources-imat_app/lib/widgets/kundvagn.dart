@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:imat_app/app_theme.dart';
 import 'package:imat_app/pages/payment_view.dart';
 import 'package:provider/provider.dart';
 import 'package:imat_app/model/imat/product.dart';
@@ -18,7 +20,7 @@ class Kundvagn extends StatelessWidget {
     var iMat = context.watch<ImatDataHandler>();
 
     return Container(
-      color: Colors.lightBlueAccent,
+      color: Colors.white,
       width: kundvagnWidth,
       height: double.infinity,
       child: Column(
@@ -44,7 +46,14 @@ class KassaKnapp extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const PaymentView()),
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) => const PaymentView(),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                return child; // Just return the child without any animation
+              },
+              transitionDuration: Duration.zero,
+              reverseTransitionDuration: Duration.zero,
+            ),
           );
         },
         child: Container(
@@ -71,11 +80,24 @@ class KundvagnKvitto extends StatelessWidget {
     return Expanded(
       child: Container(
         width: kvittoWidth,
-        color: const Color.fromARGB(255, 223, 41, 255),
+        decoration: BoxDecoration(
+          color:Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: const Color.fromARGB(255, 109, 109, 109).withValues(alpha: 0.5),
+              spreadRadius: 1,
+              blurRadius: 3,
+              blurStyle: BlurStyle.outer
+            ),
+            ],
+          ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Kundvagn", style: TextStyle(fontSize: 25)),
+            Padding(
+              padding:EdgeInsets.fromLTRB(15, 20, 15, 10),
+              child: Text("Kundvagn", style: GoogleFonts.openSans(fontSize: 25,color:AppTheme.offBlack,fontWeight:FontWeight.w600))
+            ),
             Expanded(child: KundvagnInnehall(iMat: iMat,)),
             KundvagnTotal()
           ],
@@ -98,16 +120,13 @@ class KundvagnInnehall extends StatelessWidget {
     ShoppingCart cart = iMat.getShoppingCart();
     
     return Expanded(
-      child: Container(
-        color: const Color.fromARGB(255, 107, 208, 255),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              for (ShoppingItem item in cart.items.reversed)
-                KundvagnItem(item: item, iMat: iMat,),
-            ],
-          ),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            for (ShoppingItem item in cart.items.reversed)
+              KundvagnItem(item: item, iMat: iMat,),
+          ],
         ),
       ),
     );
@@ -117,25 +136,37 @@ class KundvagnInnehall extends StatelessWidget {
 class KundvagnTotal extends StatelessWidget {
   const KundvagnTotal({super.key});
   
-
   @override
   Widget build(BuildContext context) {
     var iMat = context.watch<ImatDataHandler>();
     return Container(
       width:double.infinity,
       height:75,
-      color: const Color.fromARGB(255, 117, 255, 250),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("Total:"),
-          Text(
-            iMat.shoppingCartTotal().toString(),
-            style: TextStyle(
-              fontSize: 25
+      child: Padding(
+        padding:EdgeInsets.fromLTRB(15, 4, 15, 15),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+              child: Text(
+                "Total:",
+                style: GoogleFonts.openSans(
+                  color: AppTheme.offBlack,
+                  fontWeight: FontWeight.w300
+                )
+              ),
             ),
-          )
-        ]
+            Text(
+              (iMat.shoppingCartTotal() <= 0) ? iMat.shoppingCartTotal().toString() : '${iMat.shoppingCartTotal().toString()}:-',
+              style: TextStyle(
+                fontFamily: 'MadimiOne',
+                fontSize: 45
+              ),
+            )
+          ]
+        ),
       )
     );
   }
@@ -156,7 +187,6 @@ class KundvagnItem extends StatelessWidget {
 
     return Container(
       width:double.infinity,
-      color: Colors.blue,
       child:Row(
         children: [
           Text("${item.product.name} "),
