@@ -22,18 +22,53 @@ class PaymentView extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          Header(currentStep: 2,),
+          Header(currentStep: 2),
           Expanded(
-            child: Row(children: [
-              CardInfo(),
-              DateSelector(),
-              Kundvagn()
-            ],),
-          )
-        ]
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 4, 0),
+                    child: Container(
+                      height: double.infinity,
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color(0xFFD9D9D9).withOpacity(0.1),
+                            offset: Offset(2, 0),
+                          ),
+                        ],
+                      ),
+                      child: CardInfo(),
+                    ),
+                  ),
+                ),
+
+                Expanded(
+                  flex: 1,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 4, 0),
+                    child: Container(
+                      height: double.infinity,
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color(0xFFD9D9D9).withOpacity(0.1),
+                            offset: Offset(4, 0),
+                          ),
+                        ],
+                      ),
+                      child: DateSelector(),
+                    ),
+                  ),
+                ),
+                Kundvagn(),
+              ],
+            ),
+          ),
+        ],
       ),
     );
-
   }
-
 }
