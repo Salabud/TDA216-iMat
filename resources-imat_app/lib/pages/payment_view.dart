@@ -28,40 +28,12 @@ class PaymentView extends StatelessWidget {
               children: [
                 Expanded(
                   flex: 1,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 4, 0),
-                    child: Container(
-                      height: double.infinity,
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0xFFD9D9D9).withOpacity(0.1),
-                            offset: Offset(2, 0),
-                          ),
-                        ],
-                      ),
-                      child: CardInfo(),
-                    ),
-                  ),
+                  child: CardInfo(),
                 ),
 
                 Expanded(
                   flex: 1,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 4, 0),
-                    child: Container(
-                      height: double.infinity,
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0xFFD9D9D9).withOpacity(0.1),
-                            offset: Offset(4, 0),
-                          ),
-                        ],
-                      ),
-                      child: DateSelector(),
-                    ),
-                  ),
+                  child: DateSelector(),
                 ),
                 Kundvagn(),
               ],

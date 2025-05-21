@@ -10,18 +10,22 @@ class CardInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        color: Color(0xFFFFFFFF),
+        color: Colors.white,
         height: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            PersonUppgifter(),
-            KortUppgifter(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [TillbakaKnapp(), CreditCard()],
-            ),
-          ],
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(80, 20, 30, 25),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              PersonUppgifter(),
+              KortUppgifter(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [TillbakaKnapp(), CreditCard()],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -34,8 +38,8 @@ class CreditCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 180,
-      height: 110,
+      width: 170,
+      height: 90,
       decoration: BoxDecoration(
         color: Color(0xFF4D597E), // The blue card background
         borderRadius: BorderRadius.circular(16),
@@ -82,27 +86,24 @@ class PersonUppgifter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(50, 40, 50, 24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Personuppgifter",
-            style: GoogleFonts.notoSans(
-              fontSize: 54,
-              color: Color(0xFF414141),
-              fontWeight: FontWeight.w600,
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Personuppgifter",
+          style: GoogleFonts.openSans(
+            fontSize: 54,
+            color: Color(0xFF414141),
+            fontWeight: FontWeight.w600,
           ),
-          const SizedBox(height: 24),
-          const DoubleFieldRow(label1: "Förnamn", label2: "Efternamn"),
-          const SizedBox(height: 16),
-          const DoubleFieldRow(label1: "Adress", label2: "Postnummer"),
-          const SizedBox(height: 16),
-          const DoubleFieldRow(label1: "Ort", label2: "Telefonnummer"),
-        ],
-      ),
+        ),
+        const SizedBox(height: 24),
+        const DoubleFieldRow(label1: "Förnamn", label2: "Efternamn"),
+        const SizedBox(height: 16),
+        const DoubleFieldRow(label1: "Adress", label2: "Postnummer"),
+        const SizedBox(height: 16),
+        const DoubleFieldRow(label1: "Ort", label2: "Telefonnummer"),
+      ],
     );
   }
 }
@@ -112,110 +113,91 @@ class KortUppgifter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(50, 40, 50, 70),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Kortuppgifter",
-            style: GoogleFonts.notoSans(
-              fontSize: 54,
-              color: Color(0xFF414141),
-              fontWeight: FontWeight.w600,
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Kortuppgifter",
+          style: GoogleFonts.openSans(
+            fontSize: 54,
+            color: AppTheme.offBlack,
+            fontWeight: FontWeight.w600,
           ),
-          const SizedBox(height: 24),
-          TextField(
-            keyboardType: TextInputType.number,
-            decoration: InputDecoration(
-              labelText: "Kortnummer",
-              hintText: "1234 5678 9012 3456",
-              filled: true,
-              fillColor: Color(0xFFD9D9D9),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12.0),
-                borderSide: BorderSide.none,
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
-
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                flex: 2,
-                child: TextField(
-                  decoration: InputDecoration(
-                    labelText: "Utgångsdatum",
-                    filled: true,
-                    fillColor: Color(0xFFD9D9D9),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.0),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
-              ),
-
-              const SizedBox(width: 8),
-
-              Expanded(
-                flex: 1,
-                child: TextField(
-                  decoration: InputDecoration(
-                    labelText: "CVC",
-                    filled: true,
-                    fillColor: Color(0xFFD9D9D9),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.0),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class TillbakaKnapp extends StatelessWidget {
-  const TillbakaKnapp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            PageRouteBuilder(
-              pageBuilder:
-                  (context, animation, secondaryAnimation) => const MainView(),
-              transitionsBuilder: (
-                context,
-                animation,
-                secondaryAnimation,
-                child,
-              ) {
-                return child; // Just return the child without any animation
-              },
-              transitionDuration: Duration.zero,
-              reverseTransitionDuration: Duration.zero,
-            ),
-          );
-        },
-        child: Container(
-          height: 75,
-          color: AppTheme.red,
-          child: Text("Tillbaka"),
         ),
-      ),
+        const SizedBox(height: 24),
+        Row(
+          children: [
+            Expanded(
+              flex:7,
+              child: TextField(
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: "Kortnummer",
+                  hintText: "1234 5678 9012 3456",
+                  filled: true,
+                  fillColor: Color(0xFFD9D9D9),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(width:16),
+            Expanded(
+              flex: 3,
+              child: TextField(
+                decoration: InputDecoration(
+                  labelText: "CVC",
+                  filled: true,
+                  fillColor: Color(0xFFD9D9D9),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+            ),
+            
+          ]
+        ),
+        const SizedBox(height: 16),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex:7,
+              child: TextField(
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: "Korthavare",
+                  filled: true,
+                  fillColor: Color(0xFFD9D9D9),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(width:16),
+            Expanded(
+              flex: 3,
+              child: TextField(
+                decoration: InputDecoration(
+                  labelText: "Utgångsdatum",
+                  filled: true,
+                  fillColor: Color(0xFFD9D9D9),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
@@ -263,6 +245,63 @@ class DoubleFieldRow extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class TillbakaKnapp extends StatelessWidget {
+  const TillbakaKnapp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click ,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) => const MainView(),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                return child; // Just return the child without any animation
+              },
+              transitionDuration: Duration.zero,
+              reverseTransitionDuration: Duration.zero,
+            ),
+          );
+        },
+        child: Container(
+          width: 250,
+          height:90,
+          decoration: BoxDecoration(
+            color: AppTheme.red,
+            borderRadius: BorderRadius.all((Radius.circular(15))),
+            boxShadow: [
+              BoxShadow(
+                color: const Color.fromARGB(255, 64, 64, 64).withValues(alpha: 0.5),
+                spreadRadius: 0.2,
+                blurRadius: 1,
+                offset: Offset(0,3)
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.arrow_back_ios_rounded,color:AppTheme.darkRed,size:35),
+              Text("  Tillbaka", 
+                style:TextStyle(
+                  color:Colors.white,
+                  fontFamily:'MadimiOne',
+                  fontSize:40,
+                  fontWeight:FontWeight.w500
+                )
+              ),
+            ],
+          )
+        ),
+        
+      ),
     );
   }
 }

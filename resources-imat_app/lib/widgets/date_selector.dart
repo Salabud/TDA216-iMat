@@ -17,7 +17,7 @@ class DateSelector extends StatelessWidget {
             SizedBox(height: 50),
             LeveransTitle(),
             SizedBox(height: 30),
-            SizedBox(height: 400, width: 500, child: Kalender()),
+            SizedBox(height: 400, width: 400, child: Kalender()),
             SizedBox(height: 40),
             DatumInput(),
             SizedBox(height: 40),

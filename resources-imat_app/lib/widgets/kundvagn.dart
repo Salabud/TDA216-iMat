@@ -109,7 +109,7 @@ class KundvagnKvitto extends StatelessWidget {
             color:Colors.white,
             boxShadow: [
               BoxShadow(
-                color: const Color.fromARGB(255, 109, 109, 109).withValues(alpha: 0.5),
+                color: Colors.black.withOpacity(0.1),
                 spreadRadius: 1,
                 blurRadius: 3,
                 offset: Offset(0,3)
