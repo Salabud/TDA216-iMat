@@ -14,6 +14,7 @@ class Kategorier extends StatelessWidget {
       height:double.infinity,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
         FavoriterKnapp(),
         KategoriLista(),
@@ -28,7 +29,6 @@ class FavoriterKnapp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-
       child: MouseRegion(
         cursor: SystemMouseCursors.click,
         
@@ -36,13 +36,16 @@ class FavoriterKnapp extends StatelessWidget {
           onTap: () {
           },
           child: 
-            Text(
-              "FAVORITER",
-              style:GoogleFonts.openSans(
-                color: AppTheme.offBlack,
-                fontWeight:FontWeight.w800,
-                fontSize:24,
-              )
+            Padding(
+              padding:EdgeInsets.fromLTRB(18, 25, 0, 0),
+              child: Text(
+                "FAVORITER",
+                style:GoogleFonts.openSans(
+                  color: AppTheme.offBlack,
+                  fontWeight:FontWeight.w800,
+                  fontSize:22,
+                )
+              ),
             ),
           ),
         )
@@ -68,14 +71,18 @@ class KategoriLista extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "KATEGORIER",
-          style:GoogleFonts.openSans(
-            color: AppTheme.offBlack,
-            fontWeight:FontWeight.w800,
-            fontSize:24,
-          )
+        Padding(
+          padding:EdgeInsets.fromLTRB(18, 25, 0, 0),
+          child: Text(
+            "KATEGORIER",
+            style:GoogleFonts.openSans(
+              color: AppTheme.offBlack,
+              fontWeight:FontWeight.w800,
+              fontSize:22,
+            )
+          ),
         ),
         const SizedBox(height: 16),
       ...kategorier.map(

@@ -58,9 +58,33 @@ class KassaKnapp extends StatelessWidget {
         },
         child: Container(
           width: kvittoWidth,
-          height:75,
-          color: const Color.fromARGB(255, 120, 167, 255),
-          child: Text("kassaknapp")
+          height:90,
+          decoration: BoxDecoration(
+            color: AppTheme.green,
+            borderRadius: BorderRadius.all((Radius.circular(15))),
+            boxShadow: [
+              BoxShadow(
+                color: const Color.fromARGB(255, 64, 64, 64).withValues(alpha: 0.5),
+                spreadRadius: 0.2,
+                blurRadius: 1,
+                offset: Offset(0,3)
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("Kassa  ", 
+                style:TextStyle(
+                  color:Colors.white,
+                  fontFamily:'MadimiOne',
+                  fontSize:40,
+                  fontWeight:FontWeight.w500
+                )
+              ),
+              Icon(Icons.arrow_forward_ios_rounded,color:AppTheme.darkGreen,size:35)
+            ],
+          )
         ),
         
       ),
@@ -80,17 +104,19 @@ class KundvagnKvitto extends StatelessWidget {
     return Expanded(
       child: Container(
         width: kvittoWidth,
-        decoration: BoxDecoration(
-          color:Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: const Color.fromARGB(255, 109, 109, 109).withValues(alpha: 0.5),
-              spreadRadius: 1,
-              blurRadius: 3,
-              blurStyle: BlurStyle.outer
-            ),
+        decoration: 
+          BoxDecoration(
+            color:Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: const Color.fromARGB(255, 109, 109, 109).withValues(alpha: 0.5),
+                spreadRadius: 1,
+                blurRadius: 3,
+                offset: Offset(0,3)
+              ),
             ],
           ),
+          
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -139,35 +165,39 @@ class KundvagnTotal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var iMat = context.watch<ImatDataHandler>();
-    return Container(
-      width:double.infinity,
-      height:75,
-      child: Padding(
-        padding:EdgeInsets.fromLTRB(15, 4, 15, 15),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-              child: Text(
-                "Total:",
-                style: GoogleFonts.openSans(
-                  color: AppTheme.offBlack,
-                  fontWeight: FontWeight.w300
-                )
+    return CustomPaint(
+      painter:_TopDottedBorderPainter(),
+      child: Container(
+        width:double.infinity,
+        height:75,
+        child: Padding(
+          padding:EdgeInsets.fromLTRB(15, 4, 15, 15),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                child: Text(
+                  "Total:",
+                  style: GoogleFonts.openSans(
+                    color: AppTheme.offBlack,
+                    fontWeight: FontWeight.w300
+                  )
+                ),
               ),
-            ),
-            Text(
-              (iMat.shoppingCartTotal() <= 0) ? iMat.shoppingCartTotal().toString() : '${iMat.shoppingCartTotal().toString()}:-',
-              style: TextStyle(
-                fontFamily: 'MadimiOne',
-                fontSize: 45
-              ),
-            )
-          ]
-        ),
-      )
+              Text(
+                (iMat.shoppingCartTotal() <= 0) ? iMat.shoppingCartTotal().toString() : '${iMat.shoppingCartTotal().toString()}:-',
+                style: TextStyle(
+                  fontFamily: 'MadimiOne',
+                  fontSize: 45,
+                  color: AppTheme.offBlack
+                ),
+              )
+            ]
+          ),
+        )
+      ),
     );
   }
 }
@@ -198,4 +228,30 @@ class KundvagnItem extends StatelessWidget {
       )
     );
   }
+}
+
+class _TopDottedBorderPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = const Color.fromARGB(255, 216, 216, 216)
+      ..strokeWidth = 2
+      ..style = PaintingStyle.stroke;
+    
+    const dashWidth = 4;
+    const dashSpace = 5;
+    double startX = 0;
+    
+    while (startX < size.width) {
+      canvas.drawLine(
+        Offset(startX, 0),
+        Offset(startX + dashWidth, 0),
+        paint,
+      );
+      startX += dashWidth + dashSpace;
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
