@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:imat_app/app_theme.dart';
+import 'package:imat_app/model/imat/product.dart';
 import 'package:imat_app/model/imat_data_handler.dart';
+import 'package:imat_app/widgets/browse_area.dart';
 import 'package:provider/provider.dart';
 
 class Kategorier extends StatelessWidget {
-  const Kategorier({super.key});
+  final void Function(ProductCategory category) onCategorySelected;
+  const Kategorier({required this.onCategorySelected,super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -17,7 +21,7 @@ class Kategorier extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
         FavoriterKnapp(),
-        KategoriLista(),
+        KategoriLista(function: onCategorySelected),
       ],)
     );
   }
@@ -54,7 +58,8 @@ class FavoriterKnapp extends StatelessWidget {
 }
 
 class KategoriLista extends StatelessWidget {
-  const KategoriLista({super.key});
+  KategoriLista({required this.function,super.key});
+  final Function(ProductCategory category) function;
 
   final List<String> kategorier = const [
     "Mejeri",
@@ -67,6 +72,9 @@ class KategoriLista extends StatelessWidget {
     "Bakverk",
     "Frysvaror",
   ];
+
+  final List<String> categories = 
+    ProductCategory.values.map((cat) => cat.toString()).toList();
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +93,7 @@ class KategoriLista extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-      ...kategorier.map(
+      ...ProductCategory.values.map(
         (category) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 6,horizontal: 20),
           child: Row(
@@ -93,15 +101,13 @@ class KategoriLista extends StatelessWidget {
               MouseRegion(
                 cursor: SystemMouseCursors.click,
                 child: GestureDetector(
-                  onTap: () {
-                    // TODO: Handle tap
-                  },
+                  onTap: () => function(category),
                   child: Text(
-                    '• ${category}',
+                    '• ${category.swedishName}',
                     style:GoogleFonts.openSans(
                       color: AppTheme.offBlack,
                       fontWeight:FontWeight.w700,
-                      fontSize:20,
+                      fontSize:10,
                     )
                   ),
                 ),
@@ -138,3 +144,4 @@ class FavoriteIcon extends StatelessWidget {
       icon: icon);
   }
 }
+

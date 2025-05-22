@@ -128,3 +128,33 @@ ProductCategory _category(String cat) {
   }
   return ProductCategory.UNDEFINED;
 }
+
+extension ProductCategoryExtensions on ProductCategory {
+  String get swedishName {
+    const translations = {
+      ProductCategory.POD: 'Baljväxter',
+      ProductCategory.BREAD: 'Bröd',
+      ProductCategory.BERRY: 'Bär',
+      ProductCategory.CITRUS_FRUIT: 'Citrusfrukter',
+      ProductCategory.HOT_DRINKS: 'Varma drycker',
+      ProductCategory.COLD_DRINKS: 'Kalla drycker',
+      ProductCategory.EXOTIC_FRUIT: 'Exotisk frukt',
+      ProductCategory.FISH: 'Fisk',
+      ProductCategory.VEGETABLE_FRUIT: 'Grönsaksfrukter',
+      ProductCategory.CABBAGE: 'Kål',
+      ProductCategory.MEAT: 'Kött',
+      ProductCategory.DAIRIES: 'Mejeri',
+      ProductCategory.MELONS: 'Meloner',
+      ProductCategory.FLOUR_SUGAR_SALT: 'Mjöl/Socker/Salt',
+      ProductCategory.NUTS_AND_SEEDS: 'Nötter och frön',
+      ProductCategory.PASTA: 'Pasta',
+      ProductCategory.POTATO_RICE: 'Potatis & Ris',
+      ProductCategory.ROOT_VEGETABLE: 'Rotfrukter',
+      ProductCategory.FRUIT: 'Frukt',
+      ProductCategory.SWEET: 'Sötsaker',
+      ProductCategory.HERB: 'Örter',
+      ProductCategory.UNDEFINED: 'Övrigt',
+    };
+    return translations[this] ?? 'Övrigt';
+  }
+}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:imat_app/app_theme.dart';
 import 'package:imat_app/widgets/kalender.dart';
 
 class DateSelector extends StatelessWidget {
@@ -9,19 +10,33 @@ class DateSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        color: Color(0xFFFFFFFF),
+        color: const Color.fromARGB(255, 241, 241, 241),
         height: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(height: 50),
+            SizedBox(height: 20),
             LeveransTitle(),
-            SizedBox(height: 30),
-            SizedBox(height: 400, width: 400, child: Kalender()),
-            SizedBox(height: 40),
-            DatumInput(),
-            SizedBox(height: 40),
-            TidInput(),
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 14, 0, 0),
+              child: Transform.scale(
+                scale:0.95,
+                child: SizedBox(height: 400, width: 400, child: Kalender())
+              )
+            ),
+            Padding(
+              padding:EdgeInsets.fromLTRB(0, 17, 0, 0),
+              child: Padding(
+                padding:EdgeInsets.fromLTRB(115, 0, 195, 0),
+                child: Column(
+                  children: [
+                    DatumInput(),
+                    SizedBox(height:15),
+                    TidInput(),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -38,8 +53,8 @@ class LeveransTitle extends StatelessWidget {
       child: Text(
         "Leverans",
         style: GoogleFonts.notoSans(
-          fontSize: 54,
-          color: Color(0xFF414141),
+          fontSize: 40,
+          color: AppTheme.offBlack,
           fontWeight: FontWeight.w600,
         ),
       ),
@@ -47,49 +62,37 @@ class LeveransTitle extends StatelessWidget {
   }
 }
 
-//class Kalender extends StatelessWidget {
-// const Kalender({super.key});
-//
-//  @override
-//  Widget build(BuildContext context) {
-//    return Container(width: 300, height: 300, color: Colors.blue);
-//  }
-//}
-
 class DatumInput extends StatelessWidget {
   const DatumInput({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 500,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            "Datum: ",
-            style: GoogleFonts.notoSans(
-              fontSize: 20,
-              color: Color(0xFF414141),
-              fontWeight: FontWeight.w600,
-            ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Text(
+          "Datum: ",
+          style: GoogleFonts.openSans(
+            fontSize: 20,
+            color: AppTheme.offBlack,
+            fontWeight: FontWeight.w600,
           ),
-          SizedBox(
-            width: 250,
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: "2022-04-07",
-                filled: true,
-                fillColor: Color(0xFFD9D9D9),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                  borderSide: BorderSide.none,
-                ),
+        ),
+        SizedBox(
+          width: 146,
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: "2022-04-07",
+              filled: true,
+              fillColor: Color(0xFFD9D9D9),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.0),
+                borderSide: BorderSide.none,
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -99,57 +102,60 @@ class TidInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 500,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            "Tid: ",
-            style: GoogleFonts.notoSans(
-              fontSize: 20,
-              color: Color(0xFF414141),
-              fontWeight: FontWeight.w600,
-            ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Text(
+          "Tid: ",
+          style: GoogleFonts.openSans(
+            fontSize: 20,
+            color: AppTheme.offBlack,
+            fontWeight: FontWeight.w600,
           ),
-          SizedBox(
-            width: 50,
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: "12",
-                filled: true,
-                fillColor: Color(0xFFD9D9D9),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                  borderSide: BorderSide.none,
-                ),
+        ),
+        const SizedBox(width: 8),
+        SizedBox(
+          width: 66,
+          child: TextField(
+            textAlign: TextAlign.center,
+            decoration: InputDecoration(
+              hintText: "12",
+              filled: true,
+              fillColor: const Color(0xFFD9D9D9),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.0),
+                borderSide: BorderSide.none,
               ),
             ),
           ),
-          Text(
-            " : ",
-            style: GoogleFonts.notoSans(
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: Text(
+            ":",
+            style: GoogleFonts.openSans(
               fontSize: 20,
-              color: Color(0xFF414141),
+              color: AppTheme.offBlack,
               fontWeight: FontWeight.w600,
             ),
           ),
-          SizedBox(
-            width: 50,
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: "07",
-                filled: true,
-                fillColor: Color(0xFFD9D9D9),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                  borderSide: BorderSide.none,
-                ),
+        ),
+        SizedBox(
+          width: 66,
+          child: TextField(
+            textAlign: TextAlign.center,
+            decoration: InputDecoration(
+              hintText: "07",
+              filled: true,
+              fillColor: const Color(0xFFD9D9D9),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.0),
+                borderSide: BorderSide.none,
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

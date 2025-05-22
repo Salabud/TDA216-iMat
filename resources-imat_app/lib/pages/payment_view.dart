@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:imat_app/app_theme.dart';
+import 'package:imat_app/pages/history_view.dart';
 import 'package:imat_app/widgets/browse_area.dart';
 import 'package:imat_app/widgets/card_info.dart';
 import 'package:imat_app/widgets/date_selector.dart';
@@ -35,7 +36,7 @@ class PaymentView extends StatelessWidget {
                   flex: 1,
                   child: DateSelector(),
                 ),
-                Kundvagn(),
+                Kundvagn(nextButtonPage: HistoryView(),nextButtonLabel: "Betala",),
               ],
             ),
           ),

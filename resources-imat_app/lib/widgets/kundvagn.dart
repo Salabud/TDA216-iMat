@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:imat_app/app_theme.dart';
 import 'package:imat_app/pages/payment_view.dart';
+import 'package:imat_app/widgets/next_button.dart';
 import 'package:provider/provider.dart';
 import 'package:imat_app/model/imat/product.dart';
 import 'package:imat_app/model/imat/shopping_cart.dart';
@@ -13,7 +14,14 @@ const double kundvagnWidth = 300;
 const double kvittoWidth = 250;
 
 class Kundvagn extends StatelessWidget {
-  const Kundvagn({super.key});
+  const Kundvagn({
+    super.key,
+    required this.nextButtonPage,
+    required this.nextButtonLabel,
+  });
+
+  final Widget nextButtonPage;
+  final String nextButtonLabel;
   
   @override
   Widget build(BuildContext context) {
@@ -27,7 +35,7 @@ class Kundvagn extends StatelessWidget {
         children: [
           KundvagnKvitto(iMat: iMat,),
           SizedBox(height: 25),
-          KassaKnapp(),
+          NextButton(page:nextButtonPage,label: nextButtonLabel),
           SizedBox(height:25)
         ],
       ),
@@ -49,7 +57,7 @@ class KassaKnapp extends StatelessWidget {
             PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) => const PaymentView(),
               transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                return child; // Just return the child without any animation
+                return child;
               },
               transitionDuration: Duration.zero,
               reverseTransitionDuration: Duration.zero,

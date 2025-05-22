@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:imat_app/app_theme.dart';
 import 'package:imat_app/pages/main_view.dart';
+import 'package:imat_app/widgets/previous_button.dart';
 
 class CardInfo extends StatelessWidget {
   const CardInfo({super.key});
@@ -22,7 +23,7 @@ class CardInfo extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
-                children: [TillbakaKnapp(), CreditCard()],
+                children: [PreviousButton(page:MainView(),label:"Tillbaka"), CreditCard()],
               ),
             ],
           ),
@@ -92,8 +93,8 @@ class PersonUppgifter extends StatelessWidget {
         Text(
           "Personuppgifter",
           style: GoogleFonts.openSans(
-            fontSize: 54,
-            color: Color(0xFF414141),
+            fontSize: 40,
+            color: AppTheme.offBlack,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -119,7 +120,7 @@ class KortUppgifter extends StatelessWidget {
         Text(
           "Kortuppgifter",
           style: GoogleFonts.openSans(
-            fontSize: 54,
+            fontSize: 40,
             color: AppTheme.offBlack,
             fontWeight: FontWeight.w600,
           ),
@@ -276,14 +277,6 @@ class TillbakaKnapp extends StatelessWidget {
           decoration: BoxDecoration(
             color: AppTheme.red,
             borderRadius: BorderRadius.all((Radius.circular(15))),
-            boxShadow: [
-              BoxShadow(
-                color: const Color.fromARGB(255, 64, 64, 64).withValues(alpha: 0.5),
-                spreadRadius: 0.2,
-                blurRadius: 1,
-                offset: Offset(0,3)
-              ),
-            ],
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

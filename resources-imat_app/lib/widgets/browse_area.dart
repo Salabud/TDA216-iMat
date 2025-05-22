@@ -6,10 +6,18 @@ import 'package:imat_app/widgets/product_card.dart';
 import 'package:provider/provider.dart';
 
 class BrowseArea extends StatelessWidget {
-  const BrowseArea({super.key});
+  final ScrollController scrollController;
+  final Map<ProductCategory, GlobalKey> categoryKeys;
+  
+  const BrowseArea({
+    super.key,
+    required this.categoryKeys,
+    required this.scrollController,
+  });
 
   @override
   Widget build(BuildContext context) {
+
     return Expanded(
       child: Container(
         decoration: BoxDecoration(
@@ -31,13 +39,15 @@ class BrowseArea extends StatelessWidget {
         ),
         height: double.infinity,
         child: CustomScrollView(
+          controller: scrollController,
           slivers: [
             for (final category in ProductCategory.values) ...[
               SliverToBoxAdapter(
+                key: categoryKeys[category],
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(30, 20, 0, 10),
                   child: Text(
-                    category.toString(),
+                    category.swedishName,
                     style: const TextStyle(fontSize: 30),
                   ),
                 ),
@@ -119,3 +129,4 @@ class CategorySection extends StatelessWidget {
     );
   }
 }
+

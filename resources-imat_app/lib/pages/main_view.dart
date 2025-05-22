@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:imat_app/app_theme.dart';
+import 'package:imat_app/pages/payment_view.dart';
 import 'package:imat_app/widgets/browse_area.dart';
 import 'package:imat_app/widgets/header.dart';
 import 'package:imat_app/model/imat/product.dart';
@@ -9,96 +10,48 @@ import 'package:imat_app/widgets/kundvagn.dart';
 import 'package:imat_app/widgets/product_card.dart';
 import 'package:provider/provider.dart';
 
-class MainView extends StatelessWidget {
+class MainView extends StatefulWidget {
   const MainView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    var iMat = context.watch<ImatDataHandler>();
-    var products = iMat.selectProducts;
+  State<MainView> createState() => _MainViewState();
+}
 
-    return Scaffold(
-      body: Column(
-        children: [
-          Header(currentStep: 1,),
-          Expanded(
-            child: Row(children: [
-              Kategorier(),
-              BrowseArea(),
-              Kundvagn()
-            ],),
-          )
-        ]
-      ),
-    );
+class _MainViewState extends State<MainView> {
+  final ScrollController _scrollController = ScrollController();
 
-    /*
-    return Scaffold(
-      appBar: AppBar(title: Text('iMats produkter')),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: GridView.count(
-          crossAxisCount: 4, //  4 kolumner
-          crossAxisSpacing: 8, //  horisontellt mellanrum
-          mainAxisSpacing: 8, //  vertikalt mellanrum
-          childAspectRatio: 4 / 3, //  bredd/höjd-förhållande
-          children:
-              products.map((product) {
-                return Card(
-                  elevation: 4,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(child: iMat.getImage(product)),
-                        Text(
-                          product.name,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          '${product.price.toStringAsFixed(2)}kr',
-                          style: const TextStyle(fontSize: 14),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              }).toList(),
-        ),
-      ),
-    );*/
+  final Map<ProductCategory, GlobalKey> _categoryKeys = {
+    for (var category in ProductCategory.values) category: GlobalKey(),
+  };
+
+  void scrollToCategory(ProductCategory category) {
+    final key = _categoryKeys[category];
+    if (key != null && key.currentContext != null) {
+      Scrollable.ensureVisible(
+        key.currentContext!,
+        duration: Duration(milliseconds: 0),
+        curve: Curves.easeInOut,
+        alignment: 0.1,
+      );
+    }
   }
 
-  Card _productCard(ImatDataHandler iMat, Product product) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(AppTheme.paddingSmall),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(child: iMat.getImage(product)),
-            Text(
-              product.name,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(children: [
+        Header(currentStep: 1),
+        Expanded(
+          child: Row(children: [
+            Kategorier(onCategorySelected: scrollToCategory),
+            BrowseArea(
+              scrollController: _scrollController,
+              categoryKeys: _categoryKeys,
             ),
-            const SizedBox(height: AppTheme.paddingSmall),
-            Text(
-              '${product.price.toStringAsFixed(2)}kr',
-              style: const TextStyle(fontSize: 14),
-            ),
-          ],
-        ),
-      ),
+            Kundvagn(nextButtonLabel: "Kassa",nextButtonPage: PaymentView(),)
+          ]),
+        )
+      ]),
     );
   }
 }
