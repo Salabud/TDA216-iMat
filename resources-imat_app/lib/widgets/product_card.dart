@@ -2,20 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:imat_app/app_theme.dart';
 import 'package:imat_app/model/imat/product.dart';
+import 'package:imat_app/model/imat/product_detail.dart';
 import 'package:imat_app/model/imat/shopping_item.dart';
 import 'package:imat_app/model/imat_data_handler.dart';
 import 'package:provider/provider.dart';
 
-class ProductCard extends StatelessWidget {
+class ProductCard extends StatefulWidget {
   final Product product;
 
   const ProductCard(this.product, {super.key});
+
+  @override
+  State<ProductCard> createState() => _ProductCardState();
+
+}
+
+class _ProductCardState extends State<ProductCard> {
+  bool showInfo = false;
 
   @override
   Widget build(BuildContext context) {
     var iMat = context.watch<ImatDataHandler>();
     var productAmount = 0.0;
     var inCart = false;
+    var product = widget.product;
     for (ShoppingItem item in iMat.getShoppingCart().items){
       if (product == item.product){
         productAmount = item.amount;
@@ -23,6 +33,8 @@ class ProductCard extends StatelessWidget {
         break;
       }
     }
+    var details = iMat.getDetail(product);
+
     return Card(
       elevation: 2,
       color: AppTheme.bottomCardGrey,
@@ -39,75 +51,105 @@ class ProductCard extends StatelessWidget {
               child: Container(
                 color: Colors.white,
                 child: Column(
-                  children: [Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withValues(alpha: 0.5),
-                              spreadRadius: 0.2,
-                              blurRadius: 6,
-                              offset: Offset(-2, 4), // changes position of shadow
-                            ),
-                          ],
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Stack(
-                            children: [
-                              SizedBox(
-                                width: 160,
-                                height: 160,
-                                child: Image(
-                                  image: iMat.getImage(product).image,
-                                  fit: BoxFit.cover,
-                                  alignment: Alignment.center,
-                                ),
+                  children: [
+                    (showInfo && details != null) ? ProductInfo(details:details) : Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withValues(alpha: 0.5),
+                                spreadRadius: 0.2,
+                                blurRadius: 6,
+                                offset: Offset(-2, 4), // changes position of shadow
                               ),
-                              FavoriteButton(p: product)
-                            ]
+                            ],
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Stack(
+                              children: [
+                                SizedBox(
+                                  width: 160,
+                                  height: 160,
+                                  child: Image(
+                                    image: iMat.getImage(product).image,
+                                    fit: BoxFit.cover,
+                                    alignment: Alignment.center,
+                                  ),
+                                ),
+                                FavoriteButton(p: product)
+                              ]
+                            ),
                           ),
                         ),
-                      ),
-                      
-                      Padding(
-                        padding: const EdgeInsets.only(left: 12,top:12),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              product.name,
-                              style: const TextStyle(fontWeight: FontWeight.bold),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
+                        
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10,top:12),
+                          child: Container(
+                            width:140,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  product.name,
+                                  style: GoogleFonts.openSans(fontWeight: FontWeight.bold,color:AppTheme.offBlack,fontSize: 20),
+                                  overflow: TextOverflow.fade,
+                                ),
+                                Text(
+                                  "${product.price.toStringAsFixed(2)}:-",
+                                  style: TextStyle(fontSize: 40,fontWeight: FontWeight.w500,fontFamily: 'MadimiOne',color:AppTheme.offBlack),
+                                ),
+                                Text(
+                                  product.unit.substring(2),
+                                  style: GoogleFonts.openSans(fontSize: 15,color:AppTheme.grey),
+                                ),
+                              ],
                             ),
-                            const SizedBox(height: 4),
-                            Text(
-                              "${product.price.toStringAsFixed(2)}:-",
-                              style: TextStyle(fontSize: 40,fontWeight: FontWeight.w500,fontFamily: 'MadimiOne',color:AppTheme.offBlack),
-                            ),
-                            Text(
-                              product.unit.substring(2),
-                              style: const TextStyle(fontSize: 9),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  
-                  Row(
-                    children: [
-                      Text("Leverantör och Mer info")
-                    ],
+                      ],
+                    ),
+                  Spacer(),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '${(details != null) ? details.brand : ""} | ${(details != null) ? details.origin : ""}',
+                          style: GoogleFonts.openSans(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            color:const Color.fromARGB(255, 161, 161, 161),
+                          ),
+                        ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: showInfo ? AppTheme.darkOrange : AppTheme.orange,
+                            padding: EdgeInsets.all(0),
+                            minimumSize: Size(100, 40),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              showInfo = !showInfo;
+                            });
+                          }, 
+                          child: SizedBox(
+                            child: Text(
+                              showInfo ? "mer info" : "mer info", 
+                              style: GoogleFonts.openSans(color:Colors.white,fontSize: 15,fontWeight: FontWeight.w700)),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ]),
               ),
             ),
             
-            // Buy button
+            // Buy bar
             Padding(
               padding: EdgeInsets.all(10),
               child: DecoratedBox(
@@ -126,7 +168,7 @@ class ProductCard extends StatelessWidget {
                       style: GoogleFonts.openSans(
                         color: inCart ? Colors.white : AppTheme.offBlack,
                         fontWeight: FontWeight.w700,
-                        fontSize: 20,
+                        fontSize: 24,
                       )
                     ),
                     BuyButton(
@@ -150,8 +192,8 @@ class BuyButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width:50,
-      height:50,
+      width:60,
+      height:60,
       decoration: BoxDecoration(
         color:AppTheme.green,
         shape: BoxShape.circle, 
@@ -175,8 +217,8 @@ class RemoveButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width:50,
-      height:50,
+      width:60,
+      height:60,
       decoration: BoxDecoration(
         color:AppTheme.darkGrey,
         shape: BoxShape.circle, 
@@ -234,6 +276,31 @@ class FavoriteButton extends StatelessWidget {
           },
           icon: icon,
         ),
+      ),
+    );
+  }
+}
+
+class ProductInfo extends StatelessWidget {
+  const ProductInfo({super.key,required this.details});
+  final ProductDetail details;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding:EdgeInsets.fromLTRB(15,10,15,10),
+      child: Container(
+        width:300,
+        height:150,
+        child:Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            (details.description != null) ? Text('Beskrivning: ${details.description}',style:GoogleFonts.openSans(color:AppTheme.grey,fontWeight: FontWeight.w500)) : Text(""),
+            Text("-----",style:GoogleFonts.openSans(color:AppTheme.grey,fontWeight: FontWeight.w700)),
+            Text("Innehåll: ${details.contents}", style: GoogleFonts.openSans(color:AppTheme.offBlack,fontWeight: FontWeight.w600))
+          ]
+        )
       ),
     );
   }

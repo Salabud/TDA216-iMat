@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:imat_app/app_theme.dart';
 import 'package:imat_app/model/imat/product.dart';
 import 'package:imat_app/model/imat_data_handler.dart';
@@ -48,7 +49,7 @@ class BrowseArea extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(30, 20, 0, 10),
                   child: Text(
                     category.swedishName,
-                    style: const TextStyle(fontSize: 30),
+                    style: GoogleFonts.openSans(fontSize: 30,color:AppTheme.offBlack,fontWeight:FontWeight.w700),
                   ),
                 ),
               ),
@@ -70,7 +71,10 @@ class CategoryGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final iMat = context.watch<ImatDataHandler>();
-    final products = iMat.findProductsByCategory(category);
+    final products = iMat
+    .findProductsByCategory(category)
+    .where((product) => iMat.selectProducts.contains(product))
+    .toList();
 
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -81,9 +85,9 @@ class CategoryGrid extends StatelessWidget {
         ),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-          childAspectRatio: 0.9,
+          crossAxisSpacing: 12,
+          mainAxisSpacing: 20,
+          childAspectRatio: 1.05,
         ),
       ),
     );
@@ -121,7 +125,7 @@ class CategorySection extends StatelessWidget {
             crossAxisCount: 3,
             children:[
               for (Product product in iMat.findProductsByCategory(category))
-              ProductCard(product,),
+              ProductCard(product)
             ],
           )
         ],
@@ -129,4 +133,3 @@ class CategorySection extends StatelessWidget {
     );
   }
 }
-

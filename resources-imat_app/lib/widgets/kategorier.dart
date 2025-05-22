@@ -27,32 +27,90 @@ class Kategorier extends StatelessWidget {
   }
 }
 
-class FavoriterKnapp extends StatelessWidget {
-  const FavoriterKnapp({super.key});
+class FavoriteIcon extends StatelessWidget {
+  const FavoriteIcon({
+    super.key,
+    required this.isToggled
+  });
+
+  final bool isToggled;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        
-        child: GestureDetector(
-          onTap: () {
+    var icon =
+        isToggled
+            ? Icon(Icons.star, color: Colors.white)
+            : Icon(Icons.star, color: AppTheme.unFavColor);
+
+    return Padding(
+      padding: EdgeInsets.all(8),
+      child: Container(
+        width: 28,
+        height: 28,
+        decoration: BoxDecoration(
+          color: (isToggled) ? AppTheme.favColor : Colors.white,
+          shape: BoxShape.circle,
+          boxShadow: [BoxShadow(
+            color: const Color.fromARGB(97, 95, 95, 95),
+            blurRadius: 1,
+            spreadRadius: 1,
+            offset: Offset(0, 2)
+          )]
+        ),
+        child: IconButton(
+          iconSize: 22,
+          constraints: const BoxConstraints(),
+          padding: EdgeInsets.zero,
+          onPressed: (){
           },
-          child: 
-            Padding(
-              padding:EdgeInsets.fromLTRB(18, 25, 0, 0),
-              child: Text(
+          icon: icon,
+        ),
+      ),
+    );
+  }
+}
+
+class FavoriterKnapp extends StatefulWidget {
+  const FavoriterKnapp({super.key});
+
+  @override
+  State<FavoriterKnapp> createState() => _FavoriterKnappState();
+}
+
+class _FavoriterKnappState extends State<FavoriterKnapp> {
+  bool _isFavoriteSelected = false;
+
+  @override
+  Widget build(BuildContext context) {
+    var iMat = context.watch<ImatDataHandler>();
+
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            _isFavoriteSelected = !_isFavoriteSelected;
+          });
+          _isFavoriteSelected ? iMat.selectFavorites() : iMat.selectAllProducts();
+        },
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(18, 25, 0, 0),
+          child: Row(
+            children: [
+              Text(
                 "FAVORITER",
-                style:GoogleFonts.openSans(
+                style: GoogleFonts.openSans(
                   color: AppTheme.offBlack,
-                  fontWeight:FontWeight.w800,
-                  fontSize:22,
-                )
+                  fontWeight: FontWeight.w800,
+                  fontSize: 22,
+                ),
               ),
-            ),
+              const SizedBox(width: 8),
+              FavoriteIcon(isToggled: _isFavoriteSelected),
+            ],
           ),
-        )
+        ),
+      ),
     );
   }
 }
@@ -93,55 +151,46 @@ class KategoriLista extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-      ...ProductCategory.values.map(
-        (category) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 6,horizontal: 20),
-          child: Row(
-            children: [
-              MouseRegion(
-                cursor: SystemMouseCursors.click,
-                child: GestureDetector(
-                  onTap: () => function(category),
-                  child: Text(
-                    '• ${category.swedishName}',
-                    style:GoogleFonts.openSans(
-                      color: AppTheme.offBlack,
-                      fontWeight:FontWeight.w700,
-                      fontSize:10,
-                    )
+        Container(
+          height: 610,
+          child: ShaderMask(
+            shaderCallback: (Rect bounds) {
+              return LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Colors.transparent, Colors.transparent,Colors.white],
+                stops: [0.0, 0.95, 1.0],
+              ).createShader(bounds);
+            },
+            blendMode: BlendMode.dstOut,
+            child: ListView(
+              children: [
+                ...ProductCategory.values.map(
+                  (category) => Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+                    child: Material(
+                      child: ListTile(
+                        onTap: () => function(category),
+                        tileColor:Colors.white,
+                        title: Text(
+                          '• ${category.swedishName}',
+                          style: GoogleFonts.openSans(
+                            color: AppTheme.offBlack,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-          ),
-      ),
+        )
+
       ],
     );
-  }
-}
-
-class FavoriteIcon extends StatelessWidget {
-  const FavoriteIcon({
-    super.key,
-    required this.isToggled
-  });
-
-  final bool isToggled;
-
-  @override
-  Widget build(BuildContext context) {
-    var iMat = context.watch<ImatDataHandler>();
-    var icon =
-        isToggled
-            ? Icon(Icons.star, color: AppTheme.favColor)
-            : Icon(Icons.star, color: AppTheme.unFavColor);
-
-    return IconButton(
-      onPressed: (){
-        iMat.selectFavorites();
-      },
-      icon: icon);
   }
 }
 
