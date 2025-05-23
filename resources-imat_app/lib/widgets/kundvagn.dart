@@ -227,13 +227,132 @@ class KundvagnItem extends StatelessWidget {
       width:double.infinity,
       child:Row(
         children: [
-          Text("${item.product.name} "),
-          Text("${item.amount}st "),
-          Text("${item.total}:- "),
+          Padding(
+            padding:EdgeInsets.all(5),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(50),
+              child: Stack(
+                children: [
+                  SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: Image(
+                      image: iMat.getImage(item.product).image,
+                      fit: BoxFit.fill,
+                      alignment: Alignment.center,
+                    ),
+                  ),
+                ]
+              ),
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("${item.product.name}",style: GoogleFonts.openSans(fontSize: 15,color:AppTheme.offBlack),),
+              AmountBar(item:item,iMat:iMat),
+            ],
+          ),
           Spacer(),
-          IconButton(onPressed: () {iMat.shoppingCartRemove(item);}, icon: Icon(Icons.remove))
+          Text("${item.total}:-",style: GoogleFonts.openSans(color:AppTheme.offBlack,fontSize: 18,fontWeight: FontWeight.w500),),
+          IconButton(onPressed: () {iMat.shoppingCartRemove(item);}, icon: Icon(Icons.delete_forever))
         ],
       )
+    );
+  }
+}
+
+class AmountBar extends StatelessWidget {
+  const AmountBar({super.key,required this.item,required this.iMat});
+
+  final ShoppingItem item;
+  final ImatDataHandler iMat;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+      child: Container(
+        width:90,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(50),
+            color: (item.amount > 0) ? Colors.white : Colors.white,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              RemoveButton(
+                onPressed: () => iMat.shoppingCartUpdate(ShoppingItem(item.product),delta: -1),
+              ),
+              Text(
+                '${item.amount} st',
+                style: GoogleFonts.openSans(
+                  color: (item.amount > 0) ? AppTheme.offBlack : AppTheme.offBlack,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14,
+                )
+              ),
+              BuyButton(
+                onPressed: () => iMat.shoppingCartAdd(ShoppingItem(item.product)),
+              ),
+          ]),
+        ),
+      ),
+    );
+  }
+}
+
+class BuyButton extends StatelessWidget {
+  const BuyButton({required this.onPressed,super.key});
+
+  final void Function() onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width:22,
+      height:22,
+      decoration: BoxDecoration(
+        color:AppTheme.green,
+        shape: BoxShape.circle, 
+      ),
+      child: IconButton(
+        constraints:BoxConstraints(),
+        padding:EdgeInsets.zero,
+        icon: Icon(Icons.add,size:14),
+        color:Colors.white,
+        onPressed: (){
+          onPressed();
+        }
+      ),
+    );
+  }
+}
+
+class RemoveButton extends StatelessWidget {
+  const RemoveButton({required this.onPressed,super.key});
+
+  final void Function() onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width:22,
+      height:22,
+      decoration: BoxDecoration(
+        color:AppTheme.darkGrey,
+        shape: BoxShape.circle, 
+      ),
+      child: IconButton(
+        constraints:BoxConstraints(),
+        padding:EdgeInsets.zero,
+        icon: Icon(Icons.remove,size:14),
+        color:Colors.white,
+        onPressed: (){
+          onPressed();
+        }
+      ),
     );
   }
 }

@@ -15,7 +15,7 @@ class HeaderButtons extends StatelessWidget {
       children: [
         _headerButton(
           context: context,
-          title: 'Kvittton',
+          title: 'Kvitton',
           subtitle: 'Mina',
           onTap: () => Navigator.push(
             context,

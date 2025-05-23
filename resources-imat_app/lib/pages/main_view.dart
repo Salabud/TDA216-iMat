@@ -31,7 +31,7 @@ class _MainViewState extends State<MainView> {
         key.currentContext!,
         duration: Duration(milliseconds: 0),
         curve: Curves.easeInOut,
-        alignment: 0.1,
+        alignment: 0,
       );
     }
   }

@@ -4,8 +4,27 @@ import 'package:imat_app/app_theme.dart';
 import 'package:imat_app/pages/main_view.dart';
 import 'package:imat_app/widgets/previous_button.dart';
 
-class CardInfo extends StatelessWidget {
+class CardInfo extends StatefulWidget {
   const CardInfo({super.key});
+
+  @override
+  _CardInfoState createState() => _CardInfoState();
+}
+
+class _CardInfoState extends State<CardInfo> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: "Initial prefilled text");
+  }
+
+  @override
+  void dispose(){
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
