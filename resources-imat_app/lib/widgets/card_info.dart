@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:imat_app/app_theme.dart';
+import 'package:imat_app/model/imat_data_handler.dart';
 import 'package:imat_app/pages/main_view.dart';
 import 'package:imat_app/widgets/previous_button.dart';
 
@@ -12,22 +15,71 @@ class CardInfo extends StatefulWidget {
 }
 
 class _CardInfoState extends State<CardInfo> {
-  late TextEditingController _controller;
+  late TextEditingController cardNumberController;
+  late TextEditingController cvcController;
+  late TextEditingController holderController;
+  late TextEditingController expiryController;
+
+  late TextEditingController firstNameController;
+  late TextEditingController lastNameController;
+  late TextEditingController phoneNumberController;
+  late TextEditingController postCodeController;
+  late TextEditingController addressController;
+
+  bool _initialized = false;
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: "Initial prefilled text");
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final iMat = context.read<ImatDataHandler>();
+      final customer = iMat.getCustomer();
+      cardNumberController = TextEditingController(text: "1234 5678 9102 3456");
+      cvcController = TextEditingController(text: "123");
+      holderController = TextEditingController(text: "Britta Andersson");
+      expiryController = TextEditingController(text: "12/26");
+
+      firstNameController = TextEditingController(text: customer.firstName);
+      lastNameController = TextEditingController(text: "EFTERNAMN");
+      phoneNumberController = TextEditingController(text: "TELEFONNUMMER");
+      postCodeController = TextEditingController(text: "Postcode");        addressController = TextEditingController(text: "ADDRESS");
+    });
+    setState((){
+      _initialized = true;
+    });
   }
 
   @override
   void dispose(){
-    _controller.dispose();
+    cardNumberController.dispose();
+    cvcController.dispose();
+    holderController.dispose();
+    expiryController.dispose();
+
+    firstNameController.dispose();
+    lastNameController.dispose();
+    phoneNumberController.dispose();
+    postCodeController.dispose();
+    addressController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (
+    firstNameController == null ||
+    lastNameController == null ||
+    phoneNumberController == null ||
+    postCodeController == null ||
+    addressController == null ||
+    cardNumberController == null ||
+    cvcController == null ||
+    holderController == null ||
+    expiryController == null
+    ) {
+    return Center(child: CircularProgressIndicator());
+    }
+
     return Expanded(
       child: Container(
         color: Colors.white,
@@ -37,8 +89,19 @@ class _CardInfoState extends State<CardInfo> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              PersonUppgifter(),
-              KortUppgifter(),
+              PersonUppgifter(
+                firstName: firstNameController,
+                lastName: lastNameController,
+                phoneNumber: phoneNumberController,
+                postCode: postCodeController,
+                address: addressController,
+              ),
+              KortUppgifter(
+                cardNumber: cardNumberController,
+                cvc: cvcController,
+                holder: holderController,
+                expiry: expiryController,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -102,7 +165,20 @@ class CreditCard extends StatelessWidget {
 }
 
 class PersonUppgifter extends StatelessWidget {
-  const PersonUppgifter({super.key});
+  final TextEditingController firstName;
+  final TextEditingController lastName;
+  final TextEditingController phoneNumber;
+  final TextEditingController postCode;
+  final TextEditingController address;
+  
+  const PersonUppgifter({
+    super.key,
+    required this.firstName,
+    required this.lastName,
+    required this.phoneNumber,
+    required this.postCode,
+    required this.address,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -118,18 +194,22 @@ class PersonUppgifter extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 24),
-        const DoubleFieldRow(label1: "Förnamn", label2: "Efternamn"),
+        DoubleFieldRow(label1: "Förnamn", label2: "Efternamn", controller1: firstName,controller2: lastName),
         const SizedBox(height: 16),
-        const DoubleFieldRow(label1: "Adress", label2: "Postnummer"),
+        DoubleFieldRow(label1: "Adress", label2: "Postnummer", controller1: address, controller2: postCode,),
         const SizedBox(height: 16),
-        const DoubleFieldRow(label1: "Ort", label2: "Telefonnummer"),
+        DoubleFieldRow(label1: "Ort", label2: "Telefonnummer",controller1: TextEditingController(text: ""), controller2:phoneNumber),
       ],
     );
   }
 }
 
 class KortUppgifter extends StatelessWidget {
-  const KortUppgifter({super.key});
+  final TextEditingController cardNumber;
+  final TextEditingController cvc;
+  final TextEditingController holder;
+  final TextEditingController expiry;
+  const KortUppgifter({super.key, required this.cardNumber, required this.cvc, required this.holder, required this.expiry,});
 
   @override
   Widget build(BuildContext context) {
@@ -151,6 +231,7 @@ class KortUppgifter extends StatelessWidget {
               flex:7,
               child: TextField(
                 keyboardType: TextInputType.number,
+                controller: cardNumber,
                 decoration: InputDecoration(
                   labelText: "Kortnummer",
                   hintText: "1234 5678 9012 3456",
@@ -167,6 +248,7 @@ class KortUppgifter extends StatelessWidget {
             Expanded(
               flex: 3,
               child: TextField(
+                controller: cvc,
                 decoration: InputDecoration(
                   labelText: "CVC",
                   filled: true,
@@ -188,6 +270,7 @@ class KortUppgifter extends StatelessWidget {
             Expanded(
               flex:7,
               child: TextField(
+                controller: holder,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   labelText: "Korthavare",
@@ -204,6 +287,7 @@ class KortUppgifter extends StatelessWidget {
             Expanded(
               flex: 3,
               child: TextField(
+                controller: expiry,
                 decoration: InputDecoration(
                   labelText: "Utgångsdatum",
                   filled: true,
@@ -225,8 +309,16 @@ class KortUppgifter extends StatelessWidget {
 class DoubleFieldRow extends StatelessWidget {
   final String label1;
   final String label2;
+  final TextEditingController controller1;
+  final TextEditingController controller2;
 
-  const DoubleFieldRow({super.key, required this.label1, required this.label2});
+  const DoubleFieldRow({
+    super.key,
+    required this.label1,
+    required this.label2,
+    required this.controller1,
+    required this.controller2
+    });
 
   @override
   Widget build(BuildContext context) {
@@ -236,6 +328,7 @@ class DoubleFieldRow extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: TextField(
+              controller: controller1,
               decoration: InputDecoration(
                 labelText: label1,
                 filled: true,
@@ -252,6 +345,7 @@ class DoubleFieldRow extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(left: 8.0),
             child: TextField(
+              controller: controller2,
               decoration: InputDecoration(
                 labelText: label2,
                 filled: true,
