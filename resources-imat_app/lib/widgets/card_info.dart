@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:imat_app/model/imat/customer.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:imat_app/app_theme.dart';
@@ -11,10 +12,10 @@ class CardInfo extends StatefulWidget {
   const CardInfo({super.key});
 
   @override
-  _CardInfoState createState() => _CardInfoState();
+  CardInfoState createState() => CardInfoState();
 }
 
-class _CardInfoState extends State<CardInfo> {
+class CardInfoState extends State<CardInfo> {
   late TextEditingController cardNumberController;
   late TextEditingController cvcController;
   late TextEditingController holderController;
@@ -25,32 +26,35 @@ class _CardInfoState extends State<CardInfo> {
   late TextEditingController phoneNumberController;
   late TextEditingController postCodeController;
   late TextEditingController addressController;
+  late TextEditingController postAddressController;
 
   bool _initialized = false;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final iMat = context.read<ImatDataHandler>();
-      final customer = iMat.getCustomer();
-      cardNumberController = TextEditingController(text: "1234 5678 9102 3456");
-      cvcController = TextEditingController(text: "123");
-      holderController = TextEditingController(text: "Britta Andersson");
-      expiryController = TextEditingController(text: "12/26");
+    final iMat = context.read<ImatDataHandler>();
+    final customer = iMat.getCustomer();
+    final card = iMat.getCreditCard();
+    cardNumberController = TextEditingController(text: card.cardNumber);
+    cvcController = TextEditingController(
+      text: card.verificationCode.toString(),
+    );
+    holderController = TextEditingController(text: card.holdersName);
+    expiryController = TextEditingController(text: card.validYear.toString());
 
-      firstNameController = TextEditingController(text: customer.firstName);
-      lastNameController = TextEditingController(text: "EFTERNAMN");
-      phoneNumberController = TextEditingController(text: "TELEFONNUMMER");
-      postCodeController = TextEditingController(text: "Postcode");        addressController = TextEditingController(text: "ADDRESS");
-    });
-    setState((){
-      _initialized = true;
-    });
+    firstNameController = TextEditingController(text: customer.firstName);
+    lastNameController = TextEditingController(text: customer.lastName);
+    phoneNumberController = TextEditingController(text: customer.phoneNumber);
+    postCodeController = TextEditingController(text: customer.postCode);
+    addressController = TextEditingController(text: customer.address);
+    postAddressController = TextEditingController(text: customer.postAddress);
+
+    _initialized = true;
   }
 
   @override
-  void dispose(){
+  void dispose() {
     cardNumberController.dispose();
     cvcController.dispose();
     holderController.dispose();
@@ -64,20 +68,39 @@ class _CardInfoState extends State<CardInfo> {
     super.dispose();
   }
 
+  Future<void> saveCustomerData() async {
+    final iMat = context.read<ImatDataHandler>();
+
+    final customer = iMat.getCustomer();
+    customer.firstName = firstNameController.text;
+    customer.lastName = lastNameController.text;
+    customer.phoneNumber = phoneNumberController.text;
+    customer.mobilePhoneNumber = ""; // Add value if needed
+    customer.email = ""; // Add value if needed
+    customer.address = addressController.text;
+    customer.postCode = postCodeController.text;
+    customer.postAddress = postAddressController.text;
+
+    await iMat.setCustomer(customer);
+  }
+
+  Future<void> saveCreditCardData() async {
+    final iMat = context.read<ImatDataHandler>();
+
+    final creditCard = iMat.getCreditCard();
+
+    creditCard.holdersName = holderController.text;
+    creditCard.cardNumber = cardNumberController.text;
+    creditCard.verificationCode = int.tryParse(cvcController.text) ?? 0;
+    creditCard.validYear = int.tryParse(expiryController.text) ?? 0;
+
+    await iMat.setCreditCard(creditCard);
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (
-    firstNameController == null ||
-    lastNameController == null ||
-    phoneNumberController == null ||
-    postCodeController == null ||
-    addressController == null ||
-    cardNumberController == null ||
-    cvcController == null ||
-    holderController == null ||
-    expiryController == null
-    ) {
-    return Center(child: CircularProgressIndicator());
+    if (!_initialized) {
+      return Center(child: CircularProgressIndicator());
     }
 
     return Expanded(
@@ -94,6 +117,7 @@ class _CardInfoState extends State<CardInfo> {
                 lastName: lastNameController,
                 phoneNumber: phoneNumberController,
                 postCode: postCodeController,
+                postAddress: postAddressController,
                 address: addressController,
               ),
               KortUppgifter(
@@ -105,7 +129,10 @@ class _CardInfoState extends State<CardInfo> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
-                children: [PreviousButton(page:MainView(),label:"Tillbaka"), CreditCard()],
+                children: [
+                  PreviousButton(page: MainView(), label: "Tillbaka"),
+                  CreditCard(),
+                ],
               ),
             ],
           ),
@@ -170,7 +197,8 @@ class PersonUppgifter extends StatelessWidget {
   final TextEditingController phoneNumber;
   final TextEditingController postCode;
   final TextEditingController address;
-  
+  final TextEditingController postAddress;
+
   const PersonUppgifter({
     super.key,
     required this.firstName,
@@ -178,6 +206,7 @@ class PersonUppgifter extends StatelessWidget {
     required this.phoneNumber,
     required this.postCode,
     required this.address,
+    required this.postAddress,
   });
 
   @override
@@ -194,11 +223,26 @@ class PersonUppgifter extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 24),
-        DoubleFieldRow(label1: "Förnamn", label2: "Efternamn", controller1: firstName,controller2: lastName),
+        DoubleFieldRow(
+          label1: "Förnamn",
+          label2: "Efternamn",
+          controller1: firstName,
+          controller2: lastName,
+        ),
         const SizedBox(height: 16),
-        DoubleFieldRow(label1: "Adress", label2: "Postnummer", controller1: address, controller2: postCode,),
+        DoubleFieldRow(
+          label1: "Adress",
+          label2: "Postnummer",
+          controller1: address,
+          controller2: postCode,
+        ),
         const SizedBox(height: 16),
-        DoubleFieldRow(label1: "Ort", label2: "Telefonnummer",controller1: TextEditingController(text: ""), controller2:phoneNumber),
+        DoubleFieldRow(
+          label1: "Ort",
+          label2: "Telefonnummer",
+          controller1: postAddress,
+          controller2: phoneNumber,
+        ),
       ],
     );
   }
@@ -209,7 +253,13 @@ class KortUppgifter extends StatelessWidget {
   final TextEditingController cvc;
   final TextEditingController holder;
   final TextEditingController expiry;
-  const KortUppgifter({super.key, required this.cardNumber, required this.cvc, required this.holder, required this.expiry,});
+  const KortUppgifter({
+    super.key,
+    required this.cardNumber,
+    required this.cvc,
+    required this.holder,
+    required this.expiry,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -228,7 +278,7 @@ class KortUppgifter extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              flex:7,
+              flex: 7,
               child: TextField(
                 keyboardType: TextInputType.number,
                 controller: cardNumber,
@@ -244,7 +294,7 @@ class KortUppgifter extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(width:16),
+            SizedBox(width: 16),
             Expanded(
               flex: 3,
               child: TextField(
@@ -260,15 +310,14 @@ class KortUppgifter extends StatelessWidget {
                 ),
               ),
             ),
-            
-          ]
+          ],
         ),
         const SizedBox(height: 16),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              flex:7,
+              flex: 7,
               child: TextField(
                 controller: holder,
                 keyboardType: TextInputType.number,
@@ -283,7 +332,7 @@ class KortUppgifter extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(width:16),
+            SizedBox(width: 16),
             Expanded(
               flex: 3,
               child: TextField(
@@ -317,8 +366,8 @@ class DoubleFieldRow extends StatelessWidget {
     required this.label1,
     required this.label2,
     required this.controller1,
-    required this.controller2
-    });
+    required this.controller2,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -369,14 +418,20 @@ class TillbakaKnapp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
-      cursor: SystemMouseCursors.click ,
+      cursor: SystemMouseCursors.click,
       child: GestureDetector(
         onTap: () {
           Navigator.push(
             context,
             PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) => const MainView(),
-              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              pageBuilder:
+                  (context, animation, secondaryAnimation) => const MainView(),
+              transitionsBuilder: (
+                context,
+                animation,
+                secondaryAnimation,
+                child,
+              ) {
                 return child; // Just return the child without any animation
               },
               transitionDuration: Duration.zero,
@@ -386,7 +441,7 @@ class TillbakaKnapp extends StatelessWidget {
         },
         child: Container(
           width: 250,
-          height:90,
+          height: 90,
           decoration: BoxDecoration(
             color: AppTheme.red,
             borderRadius: BorderRadius.all((Radius.circular(15))),
@@ -394,19 +449,23 @@ class TillbakaKnapp extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.arrow_back_ios_rounded,color:AppTheme.darkRed,size:35),
-              Text("  Tillbaka", 
-                style:TextStyle(
-                  color:Colors.white,
-                  fontFamily:'MadimiOne',
-                  fontSize:40,
-                  fontWeight:FontWeight.w500
-                )
+              Icon(
+                Icons.arrow_back_ios_rounded,
+                color: AppTheme.darkRed,
+                size: 35,
+              ),
+              Text(
+                "  Tillbaka",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'MadimiOne',
+                  fontSize: 40,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ],
-          )
+          ),
         ),
-        
       ),
     );
   }

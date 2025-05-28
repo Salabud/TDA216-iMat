@@ -17,6 +17,7 @@ class PaymentView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<CardInfoState> cardInfoKey = GlobalKey<CardInfoState>();
     var iMat = context.watch<ImatDataHandler>();
     var products = iMat.selectProducts;
 
@@ -27,16 +28,17 @@ class PaymentView extends StatelessWidget {
           Expanded(
             child: Row(
               children: [
-                Expanded(
-                  flex: 1,
-                  child: CardInfo(),
-                ),
+                Expanded(flex: 1, child: CardInfo(key: cardInfoKey)),
 
-                Expanded(
-                  flex: 1,
-                  child: DateSelector(),
+                Expanded(flex: 1, child: DateSelector()),
+                Kundvagn(
+                  nextButtonPage: HistoryView(),
+                  nextButtonLabel: "Betala",
+                  onBeforeNavigate: () async {
+                    await cardInfoKey.currentState?.saveCustomerData();
+                    await cardInfoKey.currentState?.saveCreditCardData();
+                  },
                 ),
-                Kundvagn(nextButtonPage: HistoryView(),nextButtonLabel: "Betala",),
               ],
             ),
           ),

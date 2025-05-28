@@ -6,22 +6,32 @@ class NextButton extends StatelessWidget {
     super.key,
     required this.page,
     required this.label,
+    this.onBeforeNavigate,
   });
 
   final Widget page;
   final String label;
+  final Future<void> Function()? onBeforeNavigate;
 
   @override
   Widget build(BuildContext context) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: () {
+        onTap: () async {
+          if (onBeforeNavigate != null) {
+            await onBeforeNavigate!();
+          }
           Navigator.push(
             context,
             PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) => page,
-              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              transitionsBuilder: (
+                context,
+                animation,
+                secondaryAnimation,
+                child,
+              ) {
                 return child;
               },
               transitionDuration: Duration.zero,

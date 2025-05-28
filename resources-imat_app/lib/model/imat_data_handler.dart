@@ -127,7 +127,7 @@ class ImatDataHandler extends ChangeNotifier {
 
   // Sparar information till servern och
   // meddelar gränssnittet att data ändrats
-  void setCreditCard(CreditCard card) async {
+  Future<void> setCreditCard(CreditCard card) async {
     _creditCard.cardType = card.cardType;
     _creditCard.holdersName = card.holdersName;
     _creditCard.validMonth = card.validMonth;
@@ -143,7 +143,7 @@ class ImatDataHandler extends ChangeNotifier {
 
   // Sparar information till servern och
   // meddelar gränssnittet att data ändrats
-  void setCustomer(Customer customer) async {
+  Future<void> setCustomer(Customer customer) async {
     _customer.firstName = customer.firstName;
     _customer.lastName = customer.lastName;
     _customer.phoneNumber = customer.phoneNumber;
