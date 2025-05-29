@@ -23,6 +23,14 @@ class _MainViewState extends State<MainView> {
   final Map<ProductCategory, GlobalKey> _categoryKeys = {
     for (var category in ProductCategory.values) category: GlobalKey(),
   };
+  
+  bool _showOnlyFavorites = false;
+
+  void _onFavoriteToggle(bool showOnlyFavs) {
+    setState(() {
+      _showOnlyFavorites = showOnlyFavs;
+    });
+  }
 
   void scrollToCategory(ProductCategory category) {
     final key = _categoryKeys[category];
@@ -43,10 +51,15 @@ class _MainViewState extends State<MainView> {
         Header(currentStep: 1),
         Expanded(
           child: Row(children: [
-            Kategorier(onCategorySelected: scrollToCategory),
+            Kategorier(
+              onCategorySelected: scrollToCategory,
+              onFavoriteToggle: _onFavoriteToggle,
+              isFavoriteSelected: _showOnlyFavorites,
+            ),
             BrowseArea(
               scrollController: _scrollController,
               categoryKeys: _categoryKeys,
+              showOnlyFavorites: _showOnlyFavorites,
             ),
             Kundvagn(nextButtonLabel: "Kassa",nextButtonPage: PaymentView(),)
           ]),

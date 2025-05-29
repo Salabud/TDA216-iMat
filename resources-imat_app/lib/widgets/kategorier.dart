@@ -8,24 +8,35 @@ import 'package:provider/provider.dart';
 
 class Kategorier extends StatelessWidget {
   final void Function(ProductCategory category) onCategorySelected;
-  const Kategorier({required this.onCategorySelected,super.key});
+  final void Function(bool isFavoriteSelected)? onFavoriteToggle;
+  final bool isFavoriteSelected;
+
+  const Kategorier({
+    required this.onCategorySelected,
+    required this.onFavoriteToggle,
+    required this.isFavoriteSelected,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width:200,
+      width: 200,
       color: Colors.white,
-      height:double.infinity,
+      height: double.infinity,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-        FavoriterKnapp(),
-        KategoriLista(function: onCategorySelected),
-      ],)
+          FavoriterKnapp(
+            isFavoriteSelected: isFavoriteSelected,
+            onToggle: onFavoriteToggle,
+          ),
+          KategoriLista(function: onCategorySelected),
+        ],
+      ),
     );
   }
 }
+
 
 class FavoriteIcon extends StatelessWidget {
   const FavoriteIcon({
@@ -71,22 +82,18 @@ class FavoriteIcon extends StatelessWidget {
   }
 }
 
-class FavoriterKnapp extends StatefulWidget {
-  const FavoriterKnapp({super.key});
+class FavoriterKnapp extends StatelessWidget {
+  final bool isFavoriteSelected;
+  final void Function(bool isSelected)? onToggle;
 
-  @override
-  State<FavoriterKnapp> createState() => _FavoriterKnappState();
-}
-
-class _FavoriterKnappState extends State<FavoriterKnapp> {
-  bool _isFavoriteSelected = false;
+  const FavoriterKnapp({
+    super.key,
+    required this.isFavoriteSelected,
+    this.onToggle,
+  });
 
   void _toggleFavorite() {
-    setState(() {
-      _isFavoriteSelected = !_isFavoriteSelected;
-    });
-    var iMat = context.read<ImatDataHandler>();
-    _isFavoriteSelected ? iMat.selectFavorites() : iMat.selectAllProducts();
+    onToggle?.call(!isFavoriteSelected);
   }
 
   @override
@@ -102,15 +109,17 @@ class _FavoriterKnappState extends State<FavoriterKnapp> {
               Text(
                 "FAVORITER",
                 style: GoogleFonts.openSans(
-                  color: (_isFavoriteSelected) ? AppTheme.favColor : AppTheme.offBlack,
+                  color: (isFavoriteSelected)
+                      ? AppTheme.favColor
+                      : AppTheme.offBlack,
                   fontWeight: FontWeight.w800,
                   fontSize: 22,
                 ),
               ),
               const SizedBox(width: 8),
               FavoriteIcon(
-                isToggled: _isFavoriteSelected,
-                onTap: _toggleFavorite,  // Pass the handler here
+                isToggled: isFavoriteSelected,
+                onTap: _toggleFavorite,
               ),
             ],
           ),
