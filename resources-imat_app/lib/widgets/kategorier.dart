@@ -30,10 +30,12 @@ class Kategorier extends StatelessWidget {
 class FavoriteIcon extends StatelessWidget {
   const FavoriteIcon({
     super.key,
-    required this.isToggled
+    required this.isToggled,
+    required this.onTap,  // Add this
   });
 
   final bool isToggled;
+  final VoidCallback onTap;  // Add this
 
   @override
   Widget build(BuildContext context) {
@@ -61,8 +63,7 @@ class FavoriteIcon extends StatelessWidget {
           iconSize: 22,
           constraints: const BoxConstraints(),
           padding: EdgeInsets.zero,
-          onPressed: (){
-          },
+          onPressed: onTap,  // Use the callback here
           icon: icon,
         ),
       ),
@@ -80,19 +81,20 @@ class FavoriterKnapp extends StatefulWidget {
 class _FavoriterKnappState extends State<FavoriterKnapp> {
   bool _isFavoriteSelected = false;
 
+  void _toggleFavorite() {
+    setState(() {
+      _isFavoriteSelected = !_isFavoriteSelected;
+    });
+    var iMat = context.read<ImatDataHandler>();
+    _isFavoriteSelected ? iMat.selectFavorites() : iMat.selectAllProducts();
+  }
+
   @override
   Widget build(BuildContext context) {
-    var iMat = context.watch<ImatDataHandler>();
-
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
-        onTap: () {
-          setState(() {
-            _isFavoriteSelected = !_isFavoriteSelected;
-          });
-          _isFavoriteSelected ? iMat.selectFavorites() : iMat.selectAllProducts();
-        },
+        onTap: _toggleFavorite,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(18, 25, 0, 0),
           child: Row(
@@ -100,13 +102,16 @@ class _FavoriterKnappState extends State<FavoriterKnapp> {
               Text(
                 "FAVORITER",
                 style: GoogleFonts.openSans(
-                  color: AppTheme.offBlack,
+                  color: (_isFavoriteSelected) ? AppTheme.favColor : AppTheme.offBlack,
                   fontWeight: FontWeight.w800,
                   fontSize: 22,
                 ),
               ),
               const SizedBox(width: 8),
-              FavoriteIcon(isToggled: _isFavoriteSelected),
+              FavoriteIcon(
+                isToggled: _isFavoriteSelected,
+                onTap: _toggleFavorite,  // Pass the handler here
+              ),
             ],
           ),
         ),
