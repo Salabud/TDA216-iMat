@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:imat_app/app_theme.dart';
 import 'package:imat_app/pages/history_view.dart';
+import 'package:imat_app/pages/main_view.dart';
+import 'package:imat_app/pages/purchase_confirmation_view.dart';
 import 'package:imat_app/widgets/browse_area.dart';
 import 'package:imat_app/widgets/card_info.dart';
 import 'package:imat_app/widgets/date_selector.dart';
@@ -19,7 +21,6 @@ class PaymentView extends StatelessWidget {
   Widget build(BuildContext context) {
     final GlobalKey<CardInfoState> cardInfoKey = GlobalKey<CardInfoState>();
     var iMat = context.watch<ImatDataHandler>();
-    var products = iMat.selectProducts;
 
     return Scaffold(
       body: Column(
@@ -28,13 +29,22 @@ class PaymentView extends StatelessWidget {
           Expanded(
             child: Row(
               children: [
-                Expanded(flex: 1, child: CardInfo(key: cardInfoKey)),
+                Expanded(flex: 1, child: Container(
+                  color:Colors.white,
+                  child: Column(
+                    children: [
+                      CardInfo(key: cardInfoKey),
+                      PaymentInfoBottom(),
+                    ],
+                  ),
+                )),
 
                 Expanded(flex: 1, child: DateSelector()),
                 Kundvagn(
-                  nextButtonPage: HistoryView(),
+                  nextButtonPage: PurchaseConfirmationView(),
                   nextButtonLabel: "Betala",
                   onBeforeNavigate: () async {
+                    iMat.placeOrder();
                     await cardInfoKey.currentState?.saveCustomerData();
                     await cardInfoKey.currentState?.saveCreditCardData();
                   },

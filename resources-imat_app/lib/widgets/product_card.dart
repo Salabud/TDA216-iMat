@@ -117,12 +117,16 @@ class _ProductCardState extends State<ProductCard> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          '${(details != null) ? details.brand : ""} | ${(details != null) ? details.origin : ""}',
-                          style: GoogleFonts.openSans(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
-                            color:const Color.fromARGB(255, 161, 161, 161),
+                        Flexible(
+                          child: Text(
+                            '${(details != null) ? details.brand : ""} ${(details != null) ? '| ${details.origin}' : ""}',
+                            style: GoogleFonts.openSans(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                              color:const Color.fromARGB(255, 161, 161, 161),
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
                           ),
                         ),
                         ElevatedButton(
@@ -161,10 +165,10 @@ class _ProductCardState extends State<ProductCard> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     RemoveButton(
-                      onPressed: () => iMat.shoppingCartUpdate(ShoppingItem(product),delta: -1),
+                      onPressed: () => {if (inCart) {iMat.shoppingCartUpdate(ShoppingItem(product),delta: -1)}},
                     ),
                     Text(
-                      '${productAmount} st',
+                      '${productAmount} ${product.unit.substring(3)}',
                       style: GoogleFonts.openSans(
                         color: inCart ? Colors.white : AppTheme.offBlack,
                         fontWeight: FontWeight.w700,
@@ -292,14 +296,16 @@ class ProductInfo extends StatelessWidget {
       child: Container(
         width:300,
         height:150,
-        child:Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            (details.description != null) ? Text('Beskrivning: ${details.description}',style:GoogleFonts.openSans(color:AppTheme.grey,fontWeight: FontWeight.w500)) : Text(""),
-            Text("-----",style:GoogleFonts.openSans(color:AppTheme.grey,fontWeight: FontWeight.w700)),
-            Text("Innehåll: ${details.contents}", style: GoogleFonts.openSans(color:AppTheme.offBlack,fontWeight: FontWeight.w600))
-          ]
+        child:SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              (details.description != null) ? Text('Beskrivning: ${details.description}',style:GoogleFonts.openSans(color:AppTheme.grey,fontWeight: FontWeight.w500,fontSize: 14),overflow: TextOverflow.ellipsis,maxLines:4) : Text(""),
+              Text("⎯",style:GoogleFonts.openSans(color:AppTheme.grey,fontWeight: FontWeight.w700)),
+              Text("Innehåll: ${details.contents}", style: GoogleFonts.openSans(color:AppTheme.offBlack,fontWeight: FontWeight.w600),maxLines:5,overflow: TextOverflow.ellipsis,)
+            ]
+          ),
         )
       ),
     );

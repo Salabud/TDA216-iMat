@@ -194,6 +194,7 @@ class KategoriLista extends StatelessWidget {
                             fontSize: 15,
                           ),
                         ),
+                        //trailing: Icon(Icons.arrow_forward_ios_rounded,size:11,color:AppTheme.offBlack),
                       ),
                     ),
                   ),

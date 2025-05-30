@@ -108,7 +108,7 @@ class CardInfoState extends State<CardInfo> {
         color: Colors.white,
         height: double.infinity,
         child: Padding(
-          padding: EdgeInsets.fromLTRB(80, 20, 30, 25),
+          padding: EdgeInsets.fromLTRB(25, 20, 30, 25),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -126,16 +126,30 @@ class CardInfoState extends State<CardInfo> {
                 holder: holderController,
                 expiry: expiryController,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  PreviousButton(page: MainView(), label: "Tillbaka"),
-                  CreditCard(),
-                ],
-              ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class PaymentInfoBottom extends StatelessWidget {
+  const PaymentInfoBottom({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(25, 25, 30, 25),
+      child: Container(
+        color:Colors.white,
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            PreviousButton(page: MainView(), label: "Tillbaka"),
+            CreditCard(),
+          ],
         ),
       ),
     );

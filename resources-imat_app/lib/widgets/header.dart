@@ -14,12 +14,6 @@ class Header extends StatelessWidget {
       height: 100,
       decoration: BoxDecoration(
         color: AppTheme.orange,
-        boxShadow: [BoxShadow(
-          color: const Color.fromARGB(255, 82, 82, 82).withValues(alpha: 0.5),
-          spreadRadius: 1,
-          blurRadius: 3,
-          offset: Offset(0,0),
-        )]
       ),
       child: Row(
         children: [

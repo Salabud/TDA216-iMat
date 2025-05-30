@@ -61,7 +61,7 @@ class _MainViewState extends State<MainView> {
               categoryKeys: _categoryKeys,
               showOnlyFavorites: _showOnlyFavorites,
             ),
-            Kundvagn(nextButtonLabel: "Kassa",nextButtonPage: PaymentView(),)
+            Kundvagn(nextButtonLabel: "Kassa",nextButtonPage: PaymentView())
           ]),
         )
       ]),

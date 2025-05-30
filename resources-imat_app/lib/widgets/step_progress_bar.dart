@@ -44,6 +44,9 @@ class GetRightStage extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    if (currentStep == 10){
+      return CompletedStage(label: label);
+    }
     if (index < currentStep){
       return PastStage(label: label);
     }
@@ -173,6 +176,41 @@ class FutureStage extends StatelessWidget {
             style: GoogleFonts.inter(
               fontWeight: FontWeight.normal,
               color: AppTheme.darkOrange,
+            ),
+          ),
+        ],
+      );
+  }
+}
+
+class CompletedStage extends StatelessWidget {
+  const CompletedStage({super.key,required this.label});
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // Step circle
+          Container(
+            width: 28,
+            height: 28,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: AppTheme.orange,
+              border: Border.all(color:Colors.white,width:3)
+            ),
+            child: Center(
+              child: Icon(Icons.check_circle,color:Colors.white,size:22,)
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            label,
+            style: GoogleFonts.inter(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
           ),
         ],

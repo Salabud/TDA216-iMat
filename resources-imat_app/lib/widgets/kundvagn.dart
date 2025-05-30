@@ -35,7 +35,7 @@ class Kundvagn extends StatelessWidget {
       height: double.infinity,
       child: Column(
         children: [
-          KundvagnKvitto(iMat: iMat),
+          KundvagnKvitto(iMat: iMat,cart:iMat.getShoppingCart()),
           SizedBox(height: 25),
           NextButton(
             page: nextButtonPage,
@@ -85,12 +85,7 @@ class KassaKnapp extends StatelessWidget {
             borderRadius: BorderRadius.all((Radius.circular(15))),
             boxShadow: [
               BoxShadow(
-                color: const Color.fromARGB(
-                  255,
-                  64,
-                  64,
-                  64,
-                ).withValues(alpha: 0.5),
+                color: const Color.fromARGB(255,64,64,64,).withValues(alpha: 0.5),
                 spreadRadius: 0.2,
                 blurRadius: 1,
                 offset: Offset(0, 3),
@@ -124,8 +119,9 @@ class KassaKnapp extends StatelessWidget {
 
 class KundvagnKvitto extends StatelessWidget {
   final ImatDataHandler iMat;
+  final ShoppingCart cart;
 
-  const KundvagnKvitto({super.key, required this.iMat});
+  const KundvagnKvitto({super.key, required this.iMat, required this.cart});
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -157,7 +153,7 @@ class KundvagnKvitto extends StatelessWidget {
                 ),
               ),
             ),
-            Expanded(child: KundvagnInnehall(iMat: iMat)),
+            Expanded(child: KundvagnInnehall(cart:cart,iMat: iMat)),
             KundvagnTotal(),
           ],
         ),
@@ -168,12 +164,12 @@ class KundvagnKvitto extends StatelessWidget {
 
 class KundvagnInnehall extends StatelessWidget {
   final ImatDataHandler iMat;
+  final ShoppingCart cart;
 
-  const KundvagnInnehall({super.key, required this.iMat});
+  const KundvagnInnehall({super.key, required this.iMat, required this.cart});
 
   @override
   Widget build(BuildContext context) {
-    ShoppingCart cart = iMat.getShoppingCart();
 
     return Expanded(
       child: SingleChildScrollView(
@@ -257,7 +253,7 @@ class KundvagnItem extends StatelessWidget {
                     height: 50,
                     child: Image(
                       image: iMat.getImage(item.product).image,
-                      fit: BoxFit.fill,
+                      fit: BoxFit.cover,
                       alignment: Alignment.center,
                     ),
                   ),
@@ -265,18 +261,26 @@ class KundvagnItem extends StatelessWidget {
               ),
             ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "${item.product.name}",
-                style: GoogleFonts.openSans(
-                  fontSize: 15,
-                  color: AppTheme.offBlack,
+          SizedBox(
+            width:90,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SingleChildScrollView(
+                  
+                  scrollDirection: Axis.horizontal,
+                  child: Text(
+                    "${item.product.name}",
+                    style: GoogleFonts.openSans(
+                      fontSize: 15,
+                      color: AppTheme.offBlack,
+                    ),
+                    overflow:TextOverflow.ellipsis,
+                  ),
                 ),
-              ),
-              AmountBar(item: item, iMat: iMat),
-            ],
+                AmountBar(item: item, iMat: iMat),
+              ],
+            ),
           ),
           Spacer(),
           Text(
