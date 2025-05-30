@@ -99,7 +99,7 @@ class _ProductCardState extends State<ProductCard> {
                                 ),
                                 Text(
                                   "${product.price.toStringAsFixed(2)}:-",
-                                  style: TextStyle(fontSize: 40,fontWeight: FontWeight.w500,fontFamily: 'MadimiOne',color:AppTheme.offBlack),
+                                  style: TextStyle(fontSize: 38,fontWeight: FontWeight.w500,fontFamily: 'MadimiOne',color:AppTheme.offBlack),
                                 ),
                                 Text(
                                   product.unit.substring(2),

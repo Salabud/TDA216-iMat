@@ -35,7 +35,7 @@ class PurchaseConfirmationView extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    "Tack för ditt köp!\nDin order är nu slutförd och kommer levereras inom kort\n",
+                    "Tack för ditt köp!\nDin order är nu slutförd och kommer levereras inom kort.\n",
                     textAlign: TextAlign.center,
                     style: GoogleFonts.openSans(
                       fontSize: 20,
