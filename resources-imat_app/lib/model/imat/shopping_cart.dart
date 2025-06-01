@@ -17,12 +17,6 @@ class ShoppingCart {
     return ShoppingCart(items);
   }
 
-  /*
-  Map<String, dynamic> toJson() => {
-    'items': jsonEncode(items.map((item) => item.toJson()).toList()),
-  };
-  */
-
   Map<String, dynamic> toJson() {
     return {'items': items.map((item) => item.toJson()).toList()};
   }
