@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:imat_app/app_theme.dart';
+import 'package:imat_app/pages/main_view.dart';
 import 'package:imat_app/widgets/header_buttons.dart';
 import 'package:imat_app/widgets/step_progress_bar.dart';
 
@@ -41,15 +42,57 @@ class Logo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(width:20),
-          Text("i",style:AppTheme.iStyle),
-          Text("MAT",style:AppTheme.logoStyle),
-        ],
+    return Material(
+      color: AppTheme.orange,
+      child: InkWell(
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MainView()),
+        ),
+        hoverColor: const Color.fromARGB(161, 255, 194, 40),
+        splashColor: AppTheme.favColor,
+        highlightColor: const Color.fromARGB(44, 255, 238, 129),
+        child: CustomPaint(
+          painter: _RightDottedBorderPainter(),
+          child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(width:15),
+                Text("i",style:AppTheme.iStyle),
+                Text("MAT",style:AppTheme.logoStyle),
+                SizedBox(width:25)
+              ],
+          ),
+        ),
+      ),
     );
   }
+}
+
+class _RightDottedBorderPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = AppTheme.darkOrange
+      ..strokeWidth = 2
+      ..style = PaintingStyle.stroke;
+    
+    const dashWidth = 4;
+    const dashSpace = 4;
+    double startY = 0;
+    
+    while (startY < size.height) {
+      canvas.drawLine(
+        Offset(size.width, startY),
+        Offset(size.width, startY + dashWidth),
+        paint,
+      );
+      startY += dashWidth + dashSpace;
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
 class Progression extends StatelessWidget {
