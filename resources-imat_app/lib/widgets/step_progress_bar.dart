@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:imat_app/app_theme.dart';
+import 'package:imat_app/pages/main_view.dart';
+import 'package:imat_app/pages/payment_view.dart';
 
 class StepProgressBar extends StatelessWidget {
   final int currentStep; // 0 = Logga in, 1 = Handla, 2 = Betala
@@ -10,6 +12,7 @@ class StepProgressBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final steps = ['Logga in', 'Handla', 'Betala'];
+    final views = [MainView(), MainView(), PaymentView()];
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,

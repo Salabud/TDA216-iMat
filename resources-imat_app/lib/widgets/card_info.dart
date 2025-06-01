@@ -75,8 +75,8 @@ class CardInfoState extends State<CardInfo> {
     customer.firstName = firstNameController.text;
     customer.lastName = lastNameController.text;
     customer.phoneNumber = phoneNumberController.text;
-    customer.mobilePhoneNumber = ""; // Add value if needed
-    customer.email = ""; // Add value if needed
+    customer.mobilePhoneNumber = "";
+    customer.email = "";
     customer.address = addressController.text;
     customer.postCode = postCodeController.text;
     customer.postAddress = postAddressController.text;

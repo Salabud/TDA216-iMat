@@ -44,9 +44,9 @@ class PaymentView extends StatelessWidget {
                   nextButtonPage: PurchaseConfirmationView(),
                   nextButtonLabel: "Betala",
                   onBeforeNavigate: () async {
-                    iMat.placeOrder();
                     await cardInfoKey.currentState?.saveCustomerData();
                     await cardInfoKey.currentState?.saveCreditCardData();
+                    iMat.placeOrder();
                   },
                 ),
               ],

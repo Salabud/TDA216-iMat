@@ -22,7 +22,7 @@ class _ProductCardState extends State<ProductCard> {
 
   @override
   Widget build(BuildContext context) {
-    var iMat = context.watch<ImatDataHandler>();
+    var iMat = context.read<ImatDataHandler>();
     var productAmount = 0.0;
     var inCart = false;
     var product = widget.product;
@@ -248,7 +248,7 @@ class FavoriteButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var iMat = context.watch<ImatDataHandler>();
+    var iMat = context.read<ImatDataHandler>();
     var isFavorite = iMat.isFavorite(p);
 
     var icon =
